@@ -1,11 +1,15 @@
 <template>
-  <div>
-    <div id="mapContainer"></div>
+  <div id="mapContainer">
+    <div id="map">
+      <GpxInfo :gpxLayers="gpxLayers" />
+    </div>
   </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
+import GpxInfo from "@/components/GpxInfo.vue";
+
 //TODO import * as d3 from "d3";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -44,7 +48,7 @@ export default defineComponent({
   },
   methods: {
     setMap() {
-      this.map = L.map("mapContainer").setView([48.15, 17.11], 14);
+      this.map = L.map("map").setView([48.15, 17.11], 14);
 
       //tile layer with overlay
       const zoom = {
@@ -103,14 +107,23 @@ export default defineComponent({
       this.gpxLayers.push(newGpx);
     },
   },
-  components: {},
+  components: {
+    GpxInfo,
+  },
 });
 </script>
 
 <style scoped lang="scss">
 #mapContainer {
-  width: 100vw;
+  margin: 25px;
+  width: 98%;
   height: 90vh;
+  position: relative;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
 }
 </style>
 
