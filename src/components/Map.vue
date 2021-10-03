@@ -73,8 +73,13 @@ export default defineComponent({
         },
       });
 
-      //add popup with info after click
+      var layers = this.gpxLayers;
+      var map = this.map;
+
       newGpx.on("loaded", function (e) {
+        map.fitBounds(this.getBounds());
+
+        //add popup with info after click
         var gpx = e.target,
           dst = gpx.get_distance().toFixed(2),
           eleGain = gpx.get_elevation_gain().toFixed(0),
@@ -90,6 +95,9 @@ export default defineComponent({
           (eleGain - eleLoss) +
           " m </br>";
         gpx.getLayers()[0].bindPopup(info);
+
+        //add into layer array for props
+        layers.push(this);
       });
 
       //add weight change on hover
@@ -105,7 +113,6 @@ export default defineComponent({
       });
 
       newGpx.addTo(this.map);
-      this.gpxLayers.push(newGpx);
     },
     generateUniqueColor() {
       var h = 35 + this.colorOffset,
