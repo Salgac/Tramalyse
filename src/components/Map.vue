@@ -14,17 +14,33 @@ import "leaflet-gpx";
 
 export default defineComponent({
   name: "Map",
+  props: ["gpxFile"],
+  watch: {
+    gpxFile: {
+      immediate: true,
+      handler(val) {
+        //handle file change
+        if (val != null) {
+          var fr = new FileReader();
+          var setGPX = this.setGPX;
+
+          fr.onload = function () {
+            setGPX(fr.result);
+          };
+          fr.readAsText(val);
+        }
+      },
+    },
+  },
   data() {
     return {
       map: null,
+      gpxLayers: [],
     };
   },
   mounted() {
     //load map
-    console.log("Map loading...");
     this.setMap();
-
-    this.setGPX();
   },
   methods: {
     setMap() {
@@ -38,21 +54,53 @@ export default defineComponent({
       L.tileLayer.provider("Stadia.AlidadeSmooth", zoom).addTo(this.map);
       //L.tileLayer.provider("OpenRailwayMap", zoom).addTo(this.map);
     },
-    setGPX() {
-      var gpx = //TODO load from input
-        "https://dl.dropboxusercontent.com/s/y4t6t05gvm6lhmd/2021-04-17_20-18-09_gps.gpx?dl=1";
-      new L.GPX(gpx, {
+    setGPX(gpxContent) {
+      //generate new GPX layer
+      var newGpx = new L.GPX(gpxContent, {
         async: true,
         marker_options: {
           startIconUrl: "",
           endIconUrl: "",
           shadowUrl: "",
         },
-      })
-        .on("loaded", function (e) {
-          //this.map.fitBounds(e.target.getBounds());
-        })
-        .addTo(this.map);
+        polyline_options: {
+          color: "orange",
+        },
+      });
+
+      //add popup with info after click
+      newGpx.on("loaded", function (e) {
+        var gpx = e.target,
+          dst = gpx.get_distance().toFixed(2),
+          eleGain = gpx.get_elevation_gain().toFixed(0),
+          eleLoss = gpx.get_elevation_loss().toFixed(0);
+        var info =
+          "Name: " +
+          gpx.get_name() +
+          "</br>" +
+          "Distance: " +
+          dst +
+          " m </br>" +
+          "Elevation gain: " +
+          (eleGain - eleLoss) +
+          " m </br>";
+        gpx.getLayers()[0].bindPopup(info);
+      });
+
+      //add weight change on hover
+      newGpx.on("mouseover", function () {
+        this.setStyle({
+          weight: 4,
+        });
+      });
+      newGpx.on("mouseout", function () {
+        this.setStyle({
+          weight: 3,
+        });
+      });
+
+      newGpx.addTo(this.map);
+      this.gpxLayers.push(newGpx);
     },
   },
   components: {},

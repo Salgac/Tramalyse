@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <FileInput />
-    <Map />
+    <FileInput @filePicked="setFile($event)" />
+    <Map :gpxFile="gpxFile" />
   </div>
 </template>
 
@@ -12,9 +12,19 @@ import Map from "@/components/Map.vue";
 
 export default defineComponent({
   name: "Home",
+  data() {
+    return {
+      gpxFile: null,
+    };
+  },
   components: {
     FileInput,
     Map,
+  },
+  methods: {
+    setFile(file: any) {
+      this.gpxFile = file;
+    },
   },
 });
 </script>

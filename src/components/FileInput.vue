@@ -22,9 +22,8 @@ export default defineComponent({
       this.file = file;
       this.filename = file.name;
 
-      console.log(this.filename);
-
-      //TODO load content into map
+      //emit file into sibling map component
+      this.$emit("filePicked", this.file);
     },
   },
   components: {},
