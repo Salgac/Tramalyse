@@ -2,6 +2,7 @@
   <div class="home">
     <FileInput @filePicked="setFile($event)" />
     <Map :gpxFile="newestFile" />
+    <DataCard v-for="file in gpxFiles" v-bind:key="file" :gpx="file" />
   </div>
 </template>
 
@@ -9,6 +10,7 @@
 import { defineComponent } from "vue";
 import FileInput from "@/components/FileInput.vue";
 import Map from "@/components/Map.vue";
+import DataCard from "@/components/DataCard.vue";
 
 export default defineComponent({
   name: "Home",
@@ -21,6 +23,7 @@ export default defineComponent({
   components: {
     FileInput,
     Map,
+    DataCard,
   },
   methods: {
     setFile(file: any) {
