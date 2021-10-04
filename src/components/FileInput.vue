@@ -11,19 +11,48 @@ export default defineComponent({
   name: "FileInput",
   data() {
     return {
-      file: null,
-      filename: null,
-      content: null,
+      colorOffset: 0,
     };
   },
   methods: {
     onFilePicked(event: any) {
       const file = event?.target.files[0];
-      this.file = file;
-      this.filename = file.name;
+      var fr = new FileReader();
+      var gpx = {
+        color: "",
+        file: null,
+        content: "",
+      };
 
-      //emit file into sibling map component
-      this.$emit("filePicked", this.file);
+      fr.onload = (e) => {
+        //fill in gpx data
+        gpx.color = this.generateUniqueColor();
+        gpx.file = file;
+        gpx.content = fr.result as string;
+
+        //emit file into sibling map component
+        this.$emit("filePicked", gpx);
+      };
+      fr.readAsText(file);
+    },
+    generateUniqueColor(): string {
+      var h = 35 + this.colorOffset,
+        s = 100,
+        l = 50;
+      this.colorOffset += 65;
+      this.colorOffset %= 360;
+
+      //convet to hex
+      l /= 100;
+      const a = (s * Math.min(l, 1 - l)) / 100;
+      const f = (n: number) => {
+        const k = (n + h / 30) % 12;
+        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * color)
+          .toString(16)
+          .padStart(2, "0"); // convert to Hex and prefix "0" if needed
+      };
+      return `#${f(0)}${f(8)}${f(4)}`;
     },
   },
   components: {},

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <FileInput @filePicked="setFile($event)" />
-    <Map :gpxFile="gpxFile" />
+    <Map :gpxFile="newestFile" />
   </div>
 </template>
 
@@ -14,7 +14,8 @@ export default defineComponent({
   name: "Home",
   data() {
     return {
-      gpxFile: null,
+      gpxFiles: [] as any,
+      newestFile: {},
     };
   },
   components: {
@@ -23,7 +24,8 @@ export default defineComponent({
   },
   methods: {
     setFile(file: any) {
-      this.gpxFile = file;
+      this.gpxFiles.push(file);
+      this.newestFile = file;
     },
   },
 });
