@@ -10,8 +10,18 @@
         <p>desctiption 1</p>
         <p>desctiption 2</p>
       </div>
-      <Graph class="graph" :data="speedData" :heading="'Speed'" />
-      <Graph class="graph" :data="elevationData" :heading="'Elevation'" />
+      <Graph
+        class="graph"
+        :data="speedData"
+        :heading="'Speed'"
+        :gId="'s' + gpx.file.name.replace('.', '')"
+      />
+      <Graph
+        class="graph"
+        :data="elevationData"
+        :heading="'Elevation'"
+        :gId="'e' + gpx.file.name.replace('.', '')"
+      />
     </div>
   </div>
 </template>
