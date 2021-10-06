@@ -7,8 +7,36 @@
     <div id="data">
       <div class="info">
         <h3>Detail</h3>
-        <p>desctiption 1</p>
-        <p>desctiption 2</p>
+        <ul>
+          <li>
+            <label> Start time: </label>
+            <span> {{ gpx.info.timeStart }} </span>
+          </li>
+          <li>
+            <label>End time: </label>
+            <span>{{ gpx.info.timeEnd }}</span>
+          </li>
+          <li>
+            <label>Distance: </label>
+            <span>{{ gpx.info.distance.toFixed(2) }} m</span>
+          </li>
+          <li>
+            <label>Max elevation: </label>
+            <span>{{ gpx.info.elevationMax.toFixed(2) }} m</span>
+          </li>
+          <li>
+            <label>Min elevation: </label>
+            <span>{{ gpx.info.elevationMin.toFixed(2) }} m</span>
+          </li>
+          <li>
+            <label>Average speed: </label>
+            <span>{{ gpx.info.speedAvg.toFixed(2) }} km/h</span>
+          </li>
+          <li>
+            <label>Maximum speed: </label>
+            <span>{{ gpx.info.speedMax.toFixed(2) }} km/h</span>
+          </li>
+        </ul>
       </div>
       <Graph
         class="graph"
@@ -96,8 +124,27 @@ export default defineComponent({
       padding-right: 10px;
     }
 
-    .info p {
-      padding-left: 20px;
+    .info {
+      list-style-type: none;
+
+      li {
+        display: table-row;
+        font-size: 18px;
+
+        label {
+          display: table-cell;
+          text-align: left;
+        }
+        span {
+          display: table-cell;
+          text-align: right;
+          width: 65%;
+        }
+      }
+
+      &:p {
+        padding-left: 20px;
+      }
     }
 
     .graph {
