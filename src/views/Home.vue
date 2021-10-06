@@ -2,7 +2,12 @@
   <div class="home">
     <FileInput @filePicked="setFile($event)" />
     <Map :gpx="gpxFiles" />
-    <DataCard v-for="file in gpxFiles" v-bind:key="file" :gpx="file" />
+    <DataCard
+      v-for="file in gpxFiles"
+      v-bind:key="file"
+      :gpx="file"
+      @removed="deleteFile(index)"
+    />
   </div>
 </template>
 
@@ -27,6 +32,9 @@ export default defineComponent({
   methods: {
     setFile(file: any) {
       this.gpxFiles.push(file);
+    },
+    deleteFile(index: number) {
+      this.gpxFiles.splice(index, 1);
     },
   },
 });
