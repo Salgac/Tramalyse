@@ -31,6 +31,19 @@ export function readGpx(fileContent) {
 	return parsedPoints;
 }
 
+export function generateInfo(points) {
+	var info = {
+		timeStart: new Date(points.at(0).time).toLocaleString("de-ch"),
+		timeEnd: new Date(points.at(-1).time).toLocaleString("de-ch"),
+		distance: points.at(-1).dst,
+		elevationMin: Math.min(...points.map(p => p.ele)),
+		elevationMax: Math.max(...points.map(p => p.ele)),
+		speedAvg: points.reduce((total, next) => total + Number(next.speed), 0) / points.length,
+		speedMax: Math.max(...points.map(p => p.speed)),
+	}
+	return info;
+}
+
 function getDistance(point1, point2) {
 	// calculate the distance between point 1 and 2 in metres
 	let R = 6378137;

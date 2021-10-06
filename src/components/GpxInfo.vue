@@ -5,38 +5,38 @@
     :style="{ width: contentWidth + 'px' }"
   >
     <ul v-if="currentLayers.length != 0">
-      <li class="layer" v-for="layer in currentLayers" v-bind:key="layer">
-        <h1 :style="'color: ' + layer.options.polyline_options.color">
-          {{ layer.get_name() }}
+      <li class="layer" v-for="layer in gpx" v-bind:key="layer">
+        <h1 :style="'color: ' + layer.color">
+          {{ layer.file.name }}
         </h1>
         <ul>
           <li>
             <label> Start time: </label>
-            <span> {{ parseTime(layer.get_start_time()) }} </span>
+            <span> {{ layer.info.timeStart }} </span>
           </li>
           <li>
             <label>End time: </label>
-            <span>{{ parseTime(layer.get_end_time()) }}</span>
+            <span>{{ layer.info.timeEnd }}</span>
           </li>
           <li>
             <label>Distance: </label>
-            <span>{{ layer.get_distance().toFixed(2) }} m</span>
+            <span>{{ layer.info.distance.toFixed(2) }} m</span>
           </li>
           <li>
             <label>Max elevation: </label>
-            <span>{{ layer.get_elevation_max().toFixed(2) }} m</span>
+            <span>{{ layer.info.elevationMax.toFixed(2) }} m</span>
           </li>
           <li>
             <label>Min elevation: </label>
-            <span>{{ layer.get_elevation_min().toFixed(2) }} m</span>
+            <span>{{ layer.info.elevationMin.toFixed(2) }} m</span>
           </li>
           <li>
             <label>Average speed: </label>
-            <span>{{ layer.get_moving_speed().toFixed(2) }} km/h</span>
+            <span>{{ layer.info.speedAvg.toFixed(2) }} km/h</span>
           </li>
           <li>
             <label>Maximum speed: </label>
-            <span>{{ layer.get_speed_max().toFixed(2) }} km/h</span>
+            <span>{{ layer.info.speedMax.toFixed(2) }} km/h</span>
           </li>
         </ul>
       </li>
@@ -50,7 +50,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "GpxInfo",
-  props: ["gpxLayers"],
+  props: ["gpxLayers", "gpx"],
   watch: {
     gpxLayers: {
       immediate: true,
@@ -72,9 +72,6 @@ export default defineComponent({
       } else {
         this.contentWidth = 25;
       }
-    },
-    parseTime(time: Date) {
-      return time?.toLocaleString("de-ch");
     },
   },
   components: {},

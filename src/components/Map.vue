@@ -1,7 +1,7 @@
 <template>
   <div id="mapContainer">
     <div id="map">
-      <GpxInfo :gpxLayers="gpxLayers" />
+      <GpxInfo :gpxLayers="gpxLayers" :gpx="gpx" />
     </div>
   </div>
 </template>
@@ -18,15 +18,15 @@ import "leaflet-gpx";
 
 export default defineComponent({
   name: "Map",
-  props: ["gpxFile"],
+  props: ["gpx"],
   watch: {
-    gpxFile: {
+    gpx: {
       immediate: true,
       deep: true,
       handler(val) {
         //handle file change
         if (Object.keys(val).length !== 0) {
-          this.setGPX(val.content, val.color);
+          this.setGPX(val.at(-1).content, val.at(-1).color);
         }
       },
     },
@@ -35,7 +35,6 @@ export default defineComponent({
     return {
       map: null,
       gpxLayers: [],
-      colorOffset: 0,
     };
   },
   mounted() {
@@ -48,7 +47,7 @@ export default defineComponent({
 
       //tile layer with overlay
       const zoom = {
-        maxZoom: 19,
+        maxZoom: 20,
         minZoom: 12,
       };
       L.tileLayer.provider("Stadia.AlidadeSmooth", zoom).addTo(this.map);
@@ -118,7 +117,8 @@ export default defineComponent({
 
 <style scoped lang="scss">
 #mapContainer {
-  margin: 25px;
+  margin-top: 25px;
+  margin-bottom: 25px;
   width: 100%;
   height: 90vh;
   position: relative;

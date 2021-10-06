@@ -6,6 +6,8 @@
 
 <script lang="ts">
 import { readGpx } from "@/library/gpxReader";
+import { generateInfo } from "@/library/gpxReader";
+
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -24,12 +26,14 @@ export default defineComponent({
         //fill in gpx data
         var content = fr.result as string;
         var color = this.generateUniqueColor();
+        var points = readGpx(content);
 
         var gpx = {
           color: color,
           file: file,
           content: content,
-          trackPoints: readGpx(content),
+          trackPoints: points,
+          info: generateInfo(points),
         };
 
         //emit gpx object

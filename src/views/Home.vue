@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <FileInput @filePicked="setFile($event)" />
-    <Map :gpxFile="newestFile" />
+    <Map :gpx="gpxFiles" />
     <DataCard v-for="file in gpxFiles" v-bind:key="file" :gpx="file" />
   </div>
 </template>
@@ -17,7 +17,6 @@ export default defineComponent({
   data() {
     return {
       gpxFiles: [] as any,
-      newestFile: {},
     };
   },
   components: {
@@ -28,7 +27,6 @@ export default defineComponent({
   methods: {
     setFile(file: any) {
       this.gpxFiles.push(file);
-      this.newestFile = file;
     },
   },
 });
