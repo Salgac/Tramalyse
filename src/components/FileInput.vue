@@ -5,6 +5,7 @@
 </template>
 
 <script lang="ts">
+import { readGpx } from "@/library/gpxReader";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -18,19 +19,20 @@ export default defineComponent({
     onFilePicked(event: any) {
       const file = event?.target.files[0];
       var fr = new FileReader();
-      var gpx = {
-        color: "",
-        file: null,
-        content: "",
-      };
 
       fr.onload = (e) => {
         //fill in gpx data
-        gpx.color = this.generateUniqueColor();
-        gpx.file = file;
-        gpx.content = fr.result as string;
+        var content = fr.result as string;
+        var color = this.generateUniqueColor();
 
-        //emit file into sibling map component
+        var gpx = {
+          color: color,
+          file: file,
+          content: content,
+          trackPoints: readGpx(content),
+        };
+
+        //emit gpx object
         this.$emit("filePicked", gpx);
       };
       fr.readAsText(file);
