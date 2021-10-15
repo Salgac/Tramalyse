@@ -1,0 +1,120 @@
+[
+	{
+		"name": "Hlavná Stanica",
+		"coordinates": [
+			{
+				"lat": 48.157684,
+				"lon": 17.106800
+			},
+			{
+				"lat": 48.158045,
+				"lon": 17.107106
+			}
+		]
+	},
+	{
+		"name": "Pod stanicov",
+		"coordinates": [
+			{
+				"lat": 48.155812,
+				"lon": 17.107482
+			},
+			{
+				"lat": 48.156027,
+				"lon": 17.107417
+			}
+		]
+	},
+	{
+		"name": "Úrad vlády SR",
+		"coordinates": [
+			{
+				"lat": 48.154238,
+				"lon": 17.110921
+			},
+			{
+				"lat": 48.154542,
+				"lon": 17.110336
+			}
+		]
+	},
+	{
+		"name": "STU",
+		"coordinates": [
+			{
+				"lat": 48.151074,
+				"lon": 17.115867
+			},
+			{
+				"lat": 48.152352,
+				"lon": 17.115667
+			}
+		]
+	},
+	{
+		"name": "Vysoká",
+		"coordinates": [
+			{
+				"lat": 48.148465,
+				"lon": 17.112299
+			},
+			{
+				"lat": 48.148747,
+				"lon": 17.112954
+			}
+		]
+	},
+	{
+		"name": "Poštová",
+		"coordinates": [
+			{
+				"lat": 48.146636,
+				"lon": 17.108602
+			},
+			{
+				"lat": 48.147176,
+				"lon": 17.109778
+			}
+		]
+	},
+	{
+		"name": "Centrum",
+		"coordinates": [
+			{
+				"lat": 48.144885,
+				"lon": 17.112230
+			},
+			{
+				"lat": 48.145197,
+				"lon": 17.111628
+			}
+		]
+	},
+	{
+		"name": "Jesenského",
+		"coordinates": [
+			{
+				"lat": 48.142917,
+				"lon": 17.111950
+			}
+		]
+	},
+	{
+		"name": "Nám. Ľ. Štúra",
+		"coordinates": [
+			{
+				"lat": 48.140189,
+				"lon": 17.110088
+			}
+		]
+	},
+	{
+		"name": "Šafárikovo nám.",
+		"coordinates": [
+			{
+				"lat": 48.141821,
+				"lon": 17.115560
+			}
+		]
+	}
+]

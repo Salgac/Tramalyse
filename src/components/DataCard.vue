@@ -51,6 +51,19 @@
         :gId="'e' + gpx.file.name.replaceAll('.', '').replaceAll(' ', '_')"
       />
     </div>
+    <!-- Temporary -->
+    <div id="data" v-for="section in gpx.trackSections" v-bind:key="section">
+      <Graph
+        class="graph"
+        :data="section.points"
+        :heading="'Speed'"
+        :gId="
+          (section.start + 'to' + section.end)
+            .replaceAll('.', '')
+            .replaceAll(' ', '_')
+        "
+      />
+    </div>
   </div>
 </template>
 

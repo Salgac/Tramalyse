@@ -7,6 +7,9 @@
 <script lang="ts">
 import { readGpx } from "@/library/gpxReader";
 import { generateInfo } from "@/library/gpxReader";
+import { sliceByStops } from "@/library/gpxReader";
+
+import { default as stops } from "@/assets/stops.json";
 
 import { defineComponent } from "vue";
 
@@ -34,6 +37,7 @@ export default defineComponent({
           content: content,
           trackPoints: points,
           info: generateInfo(points),
+          trackSections: sliceByStops(points, stops),
         };
 
         //emit gpx object

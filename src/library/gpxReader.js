@@ -44,6 +44,67 @@ export function generateInfo(points) {
 	return info;
 }
 
+export function sliceByStops(points, stops) {
+	var sections = [];
+
+	var startIndex = 0, lastStop = { name: "Start" }, currentStop = null;
+	points.forEach((point, i) => {
+		if (parseFloat(point.speed).toFixed(0) == 0) {
+			//tram is stationary, is it in a stop?
+			if (currentStop === null) {
+				//test if is in stop
+				stops.some((stop) => {
+					stop.coordinates.forEach((coordinates) => {
+						var dst = getDistance(point, coordinates);
+						if (dst < 20) {
+							//tram is within 20 metres from stop
+							currentStop = stop;
+							console.log(stop.name);
+
+							//end last segment and add it into a list of sections
+							if (startIndex != i) {
+								var newSegment = {
+									start: lastStop.name,
+									end: currentStop.name,
+									points: points.slice(startIndex, i),
+								}
+								sections.push(newSegment);
+							}
+							return;
+						}
+					})
+				})
+			}
+			else {
+				//tram is still in a stop
+			}
+		}
+		else {
+			if (currentStop !== null) {
+				//tram has left the stop
+				lastStop = currentStop;
+				startIndex = i;
+				currentStop = null;
+			}
+			else {
+				//tram is moving
+			}
+		}
+	});
+
+	//handle edge case when recording was stopped outside of a stop
+	if (currentStop === null) {
+		var newSegment = {
+			start: lastStop.name,
+			end: "End",
+			points: points.slice(startIndex, points.length),
+		}
+		sections.push(newSegment);
+	}
+
+	return sections;
+}
+
 function getDistance(point1, point2) {
 	// calculate the distance between point 1 and 2 in metres
 	let R = 6378137;
