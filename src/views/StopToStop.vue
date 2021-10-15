@@ -10,17 +10,7 @@
       v-for="section in gpxParsed.trackSections"
       v-bind:key="section"
     >
-      <div class="info">
-        <h1>{{ section.start }}</h1>
-        <h4>
-          [{{ section.points.at(0).lat }}, {{ section.points.at(0).lon }}]
-        </h4>
-        <h4>Time: {{ getTime(section.points.at(0).time) }}</h4>
-        <h4>
-          Distance from start: {{ section.points.at(0).dst.toFixed(2) }} m
-        </h4>
-        <h4>Elevation: {{ section.points.at(0).ele }} m</h4>
-      </div>
+      <StopInfo :title="section.start" :point="section.points.at(0)" />
       <Graph
         class="graph"
         :data="section.points"
@@ -31,17 +21,7 @@
             .replaceAll(' ', '_')
         "
       />
-      <div class="info">
-        <h1>{{ section.end }}</h1>
-        <h4>
-          [{{ section.points.at(-1).lat }}, {{ section.points.at(-1).lon }}]
-        </h4>
-        <h4>Time: {{ getTime(section.points.at(-1).time) }}</h4>
-        <h4>
-          Distance from start: {{ section.points.at(-1).dst.toFixed(2) }} m
-        </h4>
-        <h4>Elevation: {{ section.points.at(-1).ele }} m</h4>
-      </div>
+      <StopInfo :title="section.end" :point="section.points.at(-1)" />
     </div>
   </div>
 </template>
@@ -49,6 +29,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Graph from "@/components/Graph.vue";
+import StopInfo from "@/components/StopInfo.vue";
 
 export default defineComponent({
   name: "StS",
@@ -63,12 +44,9 @@ export default defineComponent({
   },
   components: {
     Graph,
+    StopInfo,
   },
-  methods: {
-    getTime(time: string): string {
-      return new Date(time).toLocaleString("de-ch");
-    },
-  },
+  methods: {},
 });
 </script>
 
@@ -94,9 +72,10 @@ export default defineComponent({
   #data {
     text-align: left;
     display: flex;
-    height: 450px;
+    height: 400px;
     overflow: hidden;
     border-bottom: solid lightgray 1px;
+    padding: 15px;
 
     & > div {
       flex: 1 1 auto;
@@ -104,8 +83,8 @@ export default defineComponent({
       padding-right: 10px;
     }
 
-    .info {
-      width: 25%;
+    StopInfo {
+      width: 30%;
     }
   }
 }

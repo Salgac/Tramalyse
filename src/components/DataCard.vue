@@ -152,6 +152,24 @@ export default defineComponent({
       &:p {
         padding-left: 20px;
       }
+
+      a {
+        text-align: center;
+        text-decoration: none;
+        margin: auto;
+        display: block;
+        width: 50%;
+        padding: 15px 32px;
+        font-size: 18px;
+        color: black;
+        background-color: rgb(233, 233, 233);
+        transition: 0.3s;
+
+        &:hover {
+          box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.1),
+            0 15px 23px 0 rgba(0, 0, 0, 0.1);
+        }
+      }
     }
 
     .graph {
