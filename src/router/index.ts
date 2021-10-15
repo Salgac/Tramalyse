@@ -16,6 +16,13 @@ const routes: Array<RouteRecordRaw> = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
+  {
+    path: "/sts",
+    name: "Stop-to-Stop",
+    props: true,
+    component: () =>
+      import("../views/StopToStop.vue"),
+  }
 ];
 
 const router = createRouter({

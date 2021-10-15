@@ -37,6 +37,14 @@
             <span>{{ gpx.info.speedMax.toFixed(2) }} km/h</span>
           </li>
         </ul>
+        <router-link
+          :to="{
+            name: 'Stop-to-Stop',
+            params: { gpx: JSON.stringify(gpx), name: gpx.file.name },
+          }"
+        >
+          Open stop-to-stop analysis
+        </router-link>
       </div>
       <Graph
         class="graph"
@@ -49,19 +57,6 @@
         :data="gpx.trackPoints"
         :heading="'Elevation'"
         :gId="'e' + gpx.file.name.replaceAll('.', '').replaceAll(' ', '_')"
-      />
-    </div>
-    <!-- Temporary -->
-    <div id="data" v-for="section in gpx.trackSections" v-bind:key="section">
-      <Graph
-        class="graph"
-        :data="section.points"
-        :heading="'Speed'"
-        :gId="
-          (section.start + 'to' + section.end)
-            .replaceAll('.', '')
-            .replaceAll(' ', '_')
-        "
       />
     </div>
   </div>
