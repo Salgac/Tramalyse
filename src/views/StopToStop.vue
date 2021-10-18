@@ -20,6 +20,7 @@
             .replaceAll(' ', '_')
         "
         :section="section"
+        :marker="focusedPoint"
       />
       <StopInfo
         class="stopInfoContainer"
@@ -35,6 +36,7 @@
             .replaceAll('.', '')
             .replaceAll(' ', '_')
         "
+        @focus="updateFocus($event)"
       />
       <StopInfo
         class="stopInfoContainer"
@@ -57,6 +59,7 @@ export default defineComponent({
   data() {
     return {
       gpxParsed: null,
+      focusedPoint: null,
     };
   },
   created() {
@@ -67,7 +70,11 @@ export default defineComponent({
     StopInfo,
     Map,
   },
-  methods: {},
+  methods: {
+    updateFocus(data: any) {
+      this.focusedPoint = data;
+    },
+  },
 });
 </script>
 

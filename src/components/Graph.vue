@@ -111,6 +111,7 @@ export default defineComponent({
 
       var data = this.data;
       var handleFocus = this.handleFocus;
+      var handleEmit = this.handleEmit;
       function mousemove(event) {
         var x0 = d3.pointer(event, focus.node())[0];
         var i = bisect(data, x0, 1);
@@ -118,12 +119,14 @@ export default defineComponent({
         var selectedData = data[i];
         if (selectedData != null) {
           handleFocus(selectedData, focus, focusText, xScale, yScale);
+          handleEmit(selectedData);
         }
       }
 
       function mouseout() {
         focus.style("opacity", 0);
         focusText.style("opacity", 0);
+        handleEmit(null);
       }
     },
     getLineGenerator(yScale, xScale) {
@@ -188,6 +191,9 @@ export default defineComponent({
             this.heading === "Speed" ? selectedData.speed : selectedData.ele
           )
         );
+    },
+    handleEmit(data) {
+      this.$emit("focus", data);
     },
   },
   components: {},

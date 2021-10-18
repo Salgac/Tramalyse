@@ -19,7 +19,7 @@ import "leaflet-hotline";
 
 export default defineComponent({
   name: "Map",
-  props: ["gpx", "info", "mId", "section"],
+  props: ["gpx", "info", "mId", "section", "marker"],
   watch: {
     gpx: {
       immediate: true,
@@ -32,11 +32,17 @@ export default defineComponent({
         }
       },
     },
+    marker: {
+      handler() {
+        this.setDot();
+      },
+    },
   },
   data() {
     return {
       map: null,
       gpxLayers: [],
+      circleMarker: null,
     };
   },
   mounted() {
@@ -150,6 +156,41 @@ export default defineComponent({
       var line = L.polyline(points);
       this.map.fitBounds(line.getBounds());
       line.addTo(this.map);
+
+      //plot points
+      delete L.Icon.Default.prototype._getIconUrl;
+      L.Icon.Default.mergeOptions({
+        iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+        iconUrl: require("leaflet/dist/images/marker-icon.png"),
+        shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+      });
+      L.marker(points.at(0), {
+        title: this.section.start,
+        alt: this.section.start,
+      }).addTo(this.map);
+      L.marker(points.at(-1), {
+        title: this.section.end,
+        alt: this.section.end,
+      }).addTo(this.map);
+    },
+    setDot() {
+      var point = this.marker;
+      if (point !== null && point != undefined) {
+        if (this.circleMarker == null) {
+          this.circleMarker = L.circleMarker([point.lat, point.lon], {
+            radius: 5,
+            fillOpacity: 0.7,
+            color: "#FF0000",
+          }).addTo(this.map);
+        } else {
+          this.circleMarker.setLatLng(new L.LatLng(point.lat, point.lon));
+        }
+      } else {
+        if (this.circleMarker !== null) {
+          this.map.removeLayer(this.circleMarker);
+          this.circleMarker = null;
+        }
+      }
     },
   },
   components: {
