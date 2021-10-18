@@ -34,6 +34,7 @@ export default defineComponent({
         var gpx = {
           color: color,
           file: file,
+          mapLayer: null,
           content: content,
           trackPoints: points,
           info: generateInfo(points),

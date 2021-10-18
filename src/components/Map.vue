@@ -15,6 +15,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet-providers";
 import "leaflet-gpx";
+import "leaflet-hotline";
 
 export default defineComponent({
   name: "Map",
@@ -26,7 +27,8 @@ export default defineComponent({
       handler(val) {
         //handle file change
         if (Object.keys(val).length !== 0) {
-          this.setGPX(val.at(-1).content, val.at(-1).color);
+          this.setGPX(val.at(-1), val.at(-1).color);
+          this.setHeatmap(val.at(-1));
         }
       },
     },
@@ -53,9 +55,9 @@ export default defineComponent({
       L.tileLayer.provider("Stadia.AlidadeSmooth", zoom).addTo(this.map);
       //L.tileLayer.provider("OpenRailwayMap", zoom).addTo(this.map);
     },
-    setGPX(gpxContent, color) {
+    setGPX(gpx, color) {
       //generate new GPX layer
-      var newGpx = new L.GPX(gpxContent, {
+      var newGpx = new L.GPX(gpx.content, {
         async: true,
         marker_options: {
           startIconUrl: "",
@@ -92,6 +94,7 @@ export default defineComponent({
 
         //add into layer array for props
         layers.push(this);
+        gpx.mapLayer = this;
       });
 
       //add weight change on hover
@@ -107,6 +110,31 @@ export default defineComponent({
       });
 
       newGpx.addTo(this.map);
+    },
+    setHeatmap(gpx) {
+      // prepare data into a separate array
+      var data = [];
+      var haccMin = Infinity,
+        haccMax = 0;
+      gpx.trackPoints.forEach((point) => {
+        var hacc = point.hacc * 10000; // accuracy in cm
+        haccMin = hacc < haccMin ? hacc : haccMin;
+        haccMax = hacc > haccMax ? hacc : haccMax;
+        data.push([point.lat, point.lon, hacc]);
+      });
+
+      // plot into map
+      var hotline = L.hotline(data, {
+        min: haccMin,
+        max: haccMax,
+        palette: {
+          0.0: "#008800",
+          0.5: "#ffff00",
+          1.0: "#ff0000",
+        },
+        weight: 8,
+        outlineWidth: 0,
+      }).addTo(this.map);
     },
   },
   components: {
