@@ -10,7 +10,22 @@
       v-for="section in gpxParsed.trackSections"
       v-bind:key="section"
     >
-      <StopInfo :title="section.start" :point="section.points.at(0)" />
+      <Map
+        class="mapContainer"
+        :info="false"
+        :mId="
+          'm' +
+          (section.start + 'to' + section.end)
+            .replaceAll('.', '')
+            .replaceAll(' ', '_')
+        "
+        :section="section"
+      />
+      <StopInfo
+        class="stopInfoContainer"
+        :title="section.start"
+        :point="section.points.at(0)"
+      />
       <Graph
         class="graph"
         :data="section.points"
@@ -21,7 +36,11 @@
             .replaceAll(' ', '_')
         "
       />
-      <StopInfo :title="section.end" :point="section.points.at(-1)" />
+      <StopInfo
+        class="stopInfoContainer"
+        :title="section.end"
+        :point="section.points.at(-1)"
+      />
     </div>
   </div>
 </template>
@@ -30,6 +49,7 @@
 import { defineComponent } from "vue";
 import Graph from "@/components/Graph.vue";
 import StopInfo from "@/components/StopInfo.vue";
+import Map from "@/components/Map.vue";
 
 export default defineComponent({
   name: "StS",
@@ -45,6 +65,7 @@ export default defineComponent({
   components: {
     Graph,
     StopInfo,
+    Map,
   },
   methods: {},
 });
@@ -83,8 +104,13 @@ export default defineComponent({
       padding-right: 10px;
     }
 
-    StopInfo {
+    .stopInfoContainer {
       width: 30%;
+    }
+
+    .mapContainer {
+      width: 680px;
+      height: 380px;
     }
   }
 }

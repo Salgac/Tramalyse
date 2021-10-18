@@ -1,7 +1,7 @@
 <template>
   <div id="mapContainer">
-    <div id="map">
-      <GpxInfo :gpxLayers="gpxLayers" :gpx="gpx" />
+    <div class="map" :id="mId">
+      <GpxInfo v-if="info" :gpxLayers="gpxLayers" :gpx="gpx" />
     </div>
   </div>
 </template>
@@ -19,14 +19,14 @@ import "leaflet-hotline";
 
 export default defineComponent({
   name: "Map",
-  props: ["gpx"],
+  props: ["gpx", "info", "mId", "section"],
   watch: {
     gpx: {
       immediate: true,
       deep: true,
       handler(val) {
         //handle file change
-        if (Object.keys(val).length !== 0) {
+        if (val != null && Object.keys(val).length !== 0) {
           this.setGPX(val.at(-1), val.at(-1).color);
           this.setHeatmap(val.at(-1));
         }
@@ -42,10 +42,13 @@ export default defineComponent({
   mounted() {
     //load map
     this.setMap();
+    if (this.section != null) {
+      this.setSection();
+    }
   },
   methods: {
     setMap() {
-      this.map = L.map("map").setView([48.15, 17.11], 14);
+      this.map = L.map(this.mId).setView([48.15, 17.11], 14);
 
       //tile layer with overlay
       const zoom = {
@@ -136,6 +139,18 @@ export default defineComponent({
         outlineWidth: 0,
       }).addTo(this.map);
     },
+    setSection() {
+      // prepare data into a separate array
+      var points = [];
+      this.section.points.forEach((point) => {
+        points.push([point.lat, point.lon]);
+      });
+
+      // plot into map
+      var line = L.polyline(points);
+      this.map.fitBounds(line.getBounds());
+      line.addTo(this.map);
+    },
   },
   components: {
     GpxInfo,
@@ -152,7 +167,7 @@ export default defineComponent({
   position: relative;
 }
 
-#map {
+.map {
   width: 100%;
   height: 100%;
 }

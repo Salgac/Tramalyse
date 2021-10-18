@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <FileInput @filePicked="setFile($event)" />
-    <Map :gpx="gpxFiles" />
+    <Map :gpx="gpxFiles" :mId="'map'" :info="true" />
     <DataCard
       v-for="file in gpxFiles"
       v-bind:key="file"
