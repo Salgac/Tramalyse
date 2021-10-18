@@ -38,6 +38,18 @@
             <label>Maximum speed: </label>
             <span>{{ layer.info.speedMax.toFixed(2) }} km/h</span>
           </li>
+          <li>
+            <label>Minimum accuracy: </label>
+            <span>{{ layer.info.haccMin.toFixed(2) }} cm</span>
+          </li>
+          <li>
+            <label>Average accuracy: </label>
+            <span>{{ layer.info.haccAvg.toFixed(2) }} cm</span>
+          </li>
+          <li>
+            <label>Maximum accuracy: </label>
+            <span>{{ layer.info.haccMax.toFixed(2) }} cm</span>
+          </li>
         </ul>
       </li>
     </ul>

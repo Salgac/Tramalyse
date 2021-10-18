@@ -40,6 +40,9 @@ export function generateInfo(points) {
 		elevationMax: Math.max(...points.map(p => p.ele)),
 		speedAvg: points.reduce((total, next) => total + Number(next.speed), 0) / points.length,
 		speedMax: Math.max(...points.map(p => p.speed)),
+		haccMin: Math.max(...points.map(p => p.hacc)) * 10000,
+		haccAvg: points.reduce((total, next) => total + Number(next.hacc), 0) / points.length * 10000,
+		haccMax: Math.min(...points.map(p => p.hacc)) * 10000,
 	}
 	return info;
 }

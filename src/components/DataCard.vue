@@ -36,6 +36,18 @@
             <label>Maximum speed: </label>
             <span>{{ gpx.info.speedMax.toFixed(2) }} km/h</span>
           </li>
+          <li>
+            <label>Minimum accuracy: </label>
+            <span>{{ gpx.info.haccMin.toFixed(2) }} cm</span>
+          </li>
+          <li>
+            <label>Average accuracy: </label>
+            <span>{{ gpx.info.haccAvg.toFixed(2) }} cm</span>
+          </li>
+          <li>
+            <label>Maximum accuracy: </label>
+            <span>{{ gpx.info.haccMax.toFixed(2) }} cm</span>
+          </li>
         </ul>
         <router-link
           :to="{
