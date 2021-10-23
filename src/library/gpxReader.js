@@ -20,6 +20,7 @@ export function readGpx(fileContent) {
 			time: point.getElementsByTagName("time")[0].innerHTML,
 			ele: point.getElementsByTagName("ele")[0].innerHTML,
 			speed: point.getElementsByTagName("speed")[0].innerHTML,
+			tramSpeed: point.getElementsByTagName("vtram")[0].innerHTML,
 			course: point.getElementsByTagName("course")[0].innerHTML,
 			hacc: point.getElementsByTagName("hacc")[0].innerHTML,
 			dst: prevPoint.dst + getDistance(prevPoint, { lat: lat, lon: lon }),
@@ -27,7 +28,6 @@ export function readGpx(fileContent) {
 		parsedPoints.push(pt);
 		prevPoint = pt;
 	});
-
 	return parsedPoints;
 }
 

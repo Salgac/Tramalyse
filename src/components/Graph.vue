@@ -68,13 +68,24 @@ export default defineComponent({
         .text("Distance (km)");
 
       //draw path
-      var line = this.getLineGenerator(yScale, xScale);
+      var line = this.getLineGenerator(yScale, xScale, this.heading);
+      var tramSpeedLine = this.getLineGenerator(yScale, xScale, "tramSpeed");
+
       svg
         .append("path")
         .attr("fill", "none")
         .attr("stroke", "steelblue")
         .attr("stroke-width", 2)
         .attr("d", line(this.data));
+
+      //speed from tram
+      this.heading === "Speed" &&
+        svg
+          .append("path")
+          .attr("fill", "none")
+          .attr("stroke", "orange")
+          .attr("stroke-width", 2)
+          .attr("d", tramSpeedLine(this.data));
 
       // focus elements
       var focus = svg
@@ -129,25 +140,35 @@ export default defineComponent({
         handleEmit(null);
       }
     },
-    getLineGenerator(yScale, xScale) {
-      if (this.heading === "Speed") {
-        return d3
-          .line()
-          .y(function (d) {
-            return yScale(d.speed);
-          })
-          .x(function (d) {
-            return xScale(d.dst * 0.001);
-          });
-      } else {
-        return d3
-          .line()
-          .y(function (d) {
-            return yScale(d.ele);
-          })
-          .x(function (d) {
-            return xScale(d.dst * 0.001);
-          });
+    getLineGenerator(yScale, xScale, heading) {
+      switch (heading) {
+        case "Speed":
+          return d3
+            .line()
+            .y(function (d) {
+              return yScale(d.speed);
+            })
+            .x(function (d) {
+              return xScale(d.dst * 0.001);
+            });
+        case "tramSpeed":
+          return d3
+            .line()
+            .y(function (d) {
+              return yScale(d.tramSpeed);
+            })
+            .x(function (d) {
+              return xScale(d.dst * 0.001);
+            });
+        case "Elevation":
+          return d3
+            .line()
+            .y(function (d) {
+              return yScale(d.ele);
+            })
+            .x(function (d) {
+              return xScale(d.dst * 0.001);
+            });
       }
     },
     getYAxisText() {
