@@ -49,6 +49,12 @@ export default defineComponent({
         .attr("class", "x axis")
         .attr("transform", "translate(2," + height + ")")
         .call(d3.axisBottom(xScale));
+      this.heading === "Speed" &&
+        svg
+          .append("g")
+          .attr("class", "y axis")
+          .call(d3.axisRight(yScale))
+          .attr("transform", "translate(" + width + ",0)");
 
       //add axis description
       svg
@@ -66,10 +72,20 @@ export default defineComponent({
         .attr("x", width)
         .attr("y", height - 6)
         .text("Distance (km)");
+      this.heading === "Speed" &&
+        svg
+          .append("text")
+          .attr("class", "y label")
+          .attr("text-anchor", "end")
+          .attr("y", width - 20)
+          .attr("dy", ".75em")
+          .attr("transform", "rotate(-90)")
+          .text("Accuracy (cm)");
 
-      //draw path
+      //draw paths
       var line = this.getLineGenerator(yScale, xScale, this.heading);
       var tramSpeedLine = this.getLineGenerator(yScale, xScale, "tramSpeed");
+      var accLine = this.getLineGenerator(yScale, xScale, "Accuracy");
 
       svg
         .append("path")
@@ -86,6 +102,15 @@ export default defineComponent({
           .attr("stroke", "orange")
           .attr("stroke-width", 2)
           .attr("d", tramSpeedLine(this.data));
+
+      //accuracy
+      this.heading === "Speed" &&
+        svg
+          .append("path")
+          .attr("fill", "none")
+          .attr("stroke", "green")
+          .attr("stroke-width", 2)
+          .attr("d", accLine(this.data));
 
       // focus elements
       var focus = svg
@@ -169,6 +194,15 @@ export default defineComponent({
             .x(function (d) {
               return xScale(d.dst * 0.001);
             });
+        case "Accuracy":
+          return d3
+            .line()
+            .y(function (d) {
+              return yScale(d.hacc * 10000);
+            })
+            .x(function (d) {
+              return xScale(d.dst * 0.001);
+            });
       }
     },
     getYAxisText() {
@@ -199,9 +233,14 @@ export default defineComponent({
     handleFocus(selectedData, focus, focusText, xScale, yScale) {
       var text =
         this.heading === "Speed"
-          ? "Speed: " + parseFloat(selectedData.speed).toFixed(2) + "km/h"
+          ? "Speed: " +
+            parseFloat(selectedData.speed).toFixed(2) +
+            "km/h (" +
+            selectedData.tramSpeed +
+            ")"
           : "Elevation: " + parseFloat(selectedData.ele).toFixed(2) + "m";
       text += ", Distance: " + (selectedData.dst * 0.001).toFixed(2) + "km";
+      text += ", Acc: " + (selectedData.hacc * 10000).toFixed(2) + "cm";
       focusText.html(text);
 
       focus
