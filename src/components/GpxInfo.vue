@@ -80,7 +80,7 @@ export default defineComponent({
   methods: {
     toggleSidebar() {
       if (this.contentWidth == 25) {
-        this.contentWidth = 350;
+        this.contentWidth = 375;
       } else {
         this.contentWidth = 25;
       }
@@ -93,7 +93,7 @@ export default defineComponent({
 <style scoped lang="scss">
 #sidebar {
   display: flex;
-  position: absolute;
+  position: relative;
   height: inherit;
 
   padding-top: 30px;

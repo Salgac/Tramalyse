@@ -41,6 +41,8 @@ export default defineComponent({
   data() {
     return {
       map: null,
+      layerControl: null,
+      mapLayers: [],
       gpxLayers: [],
       circleMarker: null,
     };
@@ -54,15 +56,29 @@ export default defineComponent({
   },
   methods: {
     setMap() {
-      this.map = L.map(this.mId).setView([48.15, 17.11], 14);
-
-      //tile layer with overlay
+      //tile layers setup
       const zoom = {
         maxZoom: 20,
         minZoom: 12,
       };
-      L.tileLayer.provider("Stadia.AlidadeSmooth", zoom).addTo(this.map);
-      //L.tileLayer.provider("OpenRailwayMap", zoom).addTo(this.map);
+
+      let grayscale = L.tileLayer.provider("Stadia.AlidadeSmooth", zoom),
+        normal = L.tileLayer.provider("OpenStreetMap.Mapnik", zoom),
+        satellite = L.tileLayer.provider("Esri.WorldImagery", zoom);
+
+      var baseMaps = {
+        Grayscale: grayscale,
+        Streets: normal,
+        Satellite: satellite,
+      };
+
+      //add layers into map
+      this.map = L.map(this.mId, { layers: [grayscale], zoomControl: false });
+      this.map.setView([48.15, 17.11], 14);
+
+      //layer and zoom control
+      this.layerControl = L.control.layers(baseMaps).addTo(this.map);
+      L.control.zoom({ position: "topright" }).addTo(this.map);
     },
     setGPX(gpx, color) {
       //generate new GPX layer
@@ -78,17 +94,23 @@ export default defineComponent({
         },
       });
 
-      var layers = this.gpxLayers;
-      var map = this.map;
+      //add layer into map
+      newGpx.addTo(this.map);
+      this.layerControl.addOverlay(newGpx, gpx.file.name);
+
+      //temp vars
+      var that;
+      that = this;
 
       newGpx.on("loaded", function (e) {
-        map.fitBounds(this.getBounds());
+        that.map.fitBounds(this.getBounds());
 
-        //add popup with info after click
         var gpx = e.target,
           dst = gpx.get_distance().toFixed(2),
           eleGain = gpx.get_elevation_gain().toFixed(0),
           eleLoss = gpx.get_elevation_loss().toFixed(0);
+
+        //add popup with info after click
         var info =
           "Name: " +
           gpx.get_name() +
@@ -102,7 +124,7 @@ export default defineComponent({
         gpx.getLayers()[0].bindPopup(info);
 
         //add into layer array for props
-        layers.push(this);
+        that.gpxLayers.push(this);
         gpx.mapLayer = this;
       });
 
@@ -117,8 +139,6 @@ export default defineComponent({
           weight: 3,
         });
       });
-
-      newGpx.addTo(this.map);
     },
     setHeatmap(gpx) {
       // prepare data into a separate array
@@ -132,7 +152,7 @@ export default defineComponent({
         data.push([point.lat, point.lon, hacc]);
       });
 
-      // plot into map
+      //create layer
       var hotline = L.hotline(data, {
         min: haccMin,
         max: haccMax,
@@ -143,7 +163,10 @@ export default defineComponent({
         },
         weight: 8,
         outlineWidth: 0,
-      }).addTo(this.map);
+      });
+
+      // add into layer control for toggle
+      this.layerControl.addOverlay(hotline, gpx.file.name + " acc.");
     },
     setSection() {
       // prepare data into a separate array
@@ -206,6 +229,7 @@ export default defineComponent({
   width: 100%;
   height: 90vh;
   position: relative;
+  text-align: left !important;
 }
 
 .map {
