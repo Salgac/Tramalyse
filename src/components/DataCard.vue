@@ -7,48 +7,7 @@
     <div id="data">
       <div class="info">
         <h3>Detail</h3>
-        <ul>
-          <li>
-            <label> Start time: </label>
-            <span> {{ gpx.info.timeStart }} </span>
-          </li>
-          <li>
-            <label>End time: </label>
-            <span>{{ gpx.info.timeEnd }}</span>
-          </li>
-          <li>
-            <label>Distance: </label>
-            <span>{{ gpx.info.distance.toFixed(2) }} m</span>
-          </li>
-          <li>
-            <label>Max elevation: </label>
-            <span>{{ gpx.info.elevationMax.toFixed(2) }} m</span>
-          </li>
-          <li>
-            <label>Min elevation: </label>
-            <span>{{ gpx.info.elevationMin.toFixed(2) }} m</span>
-          </li>
-          <li>
-            <label>Average speed: </label>
-            <span>{{ gpx.info.speedAvg.toFixed(2) }} km/h</span>
-          </li>
-          <li>
-            <label>Maximum speed: </label>
-            <span>{{ gpx.info.speedMax.toFixed(2) }} km/h</span>
-          </li>
-          <li>
-            <label>Minimum accuracy: </label>
-            <span>{{ gpx.info.haccMin.toFixed(2) }} cm</span>
-          </li>
-          <li>
-            <label>Average accuracy: </label>
-            <span>{{ gpx.info.haccAvg.toFixed(2) }} cm</span>
-          </li>
-          <li>
-            <label>Maximum accuracy: </label>
-            <span>{{ gpx.info.haccMax.toFixed(2) }} cm</span>
-          </li>
-        </ul>
+        <RouteInfo :route="gpx" />
         <router-link
           :to="{
             name: 'Stop-to-Stop',
@@ -77,6 +36,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Graph from "@/components/Graph.vue";
+import RouteInfo from "./RouteInfo.vue";
 
 export default defineComponent({
   name: "DataCard",
@@ -95,11 +55,12 @@ export default defineComponent({
   },
   components: {
     Graph,
+    RouteInfo,
   },
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 #container {
   width: 100%;
   height: 500px;
@@ -145,20 +106,22 @@ export default defineComponent({
     }
 
     .info {
-      list-style-type: none;
+      .info {
+        list-style-type: none;
 
-      li {
-        display: table-row;
-        font-size: 18px;
+        li {
+          display: table-row;
+          font-size: 18px;
 
-        label {
-          display: table-cell;
-          text-align: left;
-        }
-        span {
-          display: table-cell;
-          text-align: right;
-          width: 65%;
+          label {
+            display: table-cell;
+            text-align: left;
+          }
+          span {
+            display: table-cell;
+            text-align: right;
+            width: 65%;
+          }
         }
       }
 

@@ -44,8 +44,8 @@ export function generateInfo(points) {
 	}
 
 	return {
-		timeStart: new Date(points.at(0).time).toLocaleString("de-ch"),
-		timeEnd: new Date(points.at(-1).time).toLocaleString("de-ch"),
+		timeStart: new Date(points.at(0).time),
+		timeEnd: new Date(points.at(-1).time),
 		distance: points.at(-1).dst,
 		elevationMin: Math.min(...points.map(p => p.ele)),
 		elevationMax: Math.max(...points.map(p => p.ele)),

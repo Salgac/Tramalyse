@@ -1,16 +1,15 @@
 <template>
   <div id="mapContainer">
     <div class="map" :id="mId">
-      <GpxInfo v-if="info" />
+      <Sidebar v-if="info" />
     </div>
   </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import GpxInfo from "@/components/GpxInfo.vue";
+import Sidebar from "@/components/Sidebar.vue";
 
-//TODO import * as d3 from "d3";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet-providers";
@@ -200,7 +199,7 @@ export default defineComponent({
     },
   },
   components: {
-    GpxInfo,
+    Sidebar,
   },
 });
 </script>
