@@ -4,6 +4,12 @@ export function readGpx(fileContent) {
 	var document = parser.parseFromString(fileContent, "text/xml");
 	var trackPoints = Array.from(document.getElementsByTagName("trkpt"));
 	var parsedPoints = [];
+
+	//error handling
+	if (trackPoints.length == 0) {
+		return [];
+	}
+
 	var prevPoint = {
 		lat: trackPoints[0].getAttribute("lat"),
 		lon: trackPoints[0].getAttribute("lon"),
@@ -19,10 +25,10 @@ export function readGpx(fileContent) {
 			lon: lon,
 			time: point.getElementsByTagName("time")[0].innerHTML,
 			ele: point.getElementsByTagName("ele")[0].innerHTML,
-			speed: point.getElementsByTagName("speed")[0].innerHTML,
-			tramSpeed: point.getElementsByTagName("vtram")[0].innerHTML,
-			course: point.getElementsByTagName("course")[0].innerHTML,
-			hacc: point.getElementsByTagName("hacc")[0].innerHTML,
+			speed: point.getElementsByTagName("speed")[0].innerHTML, // TODO * 3.6, //from m/s to km/h
+			tramSpeed: point.getElementsByTagName("vtram")[0]?.innerHTML,
+			course: point.getElementsByTagName("course")[0]?.innerHTML,
+			hacc: point.getElementsByTagName("hacc")[0]?.innerHTML,
 			dst: prevPoint.dst + getDistance(prevPoint, { lat: lat, lon: lon }),
 		};
 		parsedPoints.push(pt);
@@ -32,7 +38,12 @@ export function readGpx(fileContent) {
 }
 
 export function generateInfo(points) {
-	var info = {
+	//error handling
+	if (points.length == 0) {
+		return {};
+	}
+
+	return {
 		timeStart: new Date(points.at(0).time).toLocaleString("de-ch"),
 		timeEnd: new Date(points.at(-1).time).toLocaleString("de-ch"),
 		distance: points.at(-1).dst,
@@ -44,7 +55,6 @@ export function generateInfo(points) {
 		haccAvg: points.reduce((total, next) => total + Number(next.hacc), 0) / points.length * 10000,
 		haccMax: Math.min(...points.map(p => p.hacc)) * 10000,
 	}
-	return info;
 }
 
 export function sliceByStops(points, stops) {

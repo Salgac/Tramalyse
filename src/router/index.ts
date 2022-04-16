@@ -22,7 +22,13 @@ const routes: Array<RouteRecordRaw> = [
     props: true,
     component: () =>
       import("../views/StopToStop.vue"),
-  }
+    beforeEnter: (to, from, next) => {
+      if (from.name === 'Home')
+        next();
+      else
+        next({ name: 'Home' });
+    },
+  },
 ];
 
 const router = createRouter({

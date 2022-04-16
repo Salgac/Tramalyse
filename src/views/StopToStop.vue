@@ -1,44 +1,50 @@
 <template>
-  <div class="sts">
-    <div id="header">
-      <h1 :style="{ background: gpxParsed.color }">
-        {{ name }}
-      </h1>
+  <div>
+    <div class="sts" v-if="gpx !== undefined">
+      <div id="header">
+        <h1 :style="{ background: gpxParsed.color }">
+          {{ name }}
+        </h1>
+      </div>
+      <div id="data" v-for="section in trackSections" v-bind:key="section">
+        <Map
+          class="mapContainer"
+          :info="false"
+          :mId="
+            'm' +
+            (section.start + 'to' + section.end)
+              .replaceAll('.', '')
+              .replaceAll(' ', '_')
+          "
+          :section="section"
+          :marker="focusedPoint"
+        />
+        <StopInfo
+          class="stopInfoContainer"
+          :title="section.start"
+          :point="section.points.at(0)"
+        />
+        <Graph
+          class="graph"
+          :data="section.points"
+          :heading="'Speed'"
+          :gId="
+            (section.start + 'to' + section.end)
+              .replaceAll('.', '')
+              .replaceAll(' ', '_')
+          "
+          @focus="updateFocus($event)"
+        />
+        <StopInfo
+          class="stopInfoContainer"
+          :title="section.end"
+          :point="section.points.at(-1)"
+        />
+      </div>
     </div>
-    <div id="data" v-for="section in trackSections" v-bind:key="section">
-      <Map
-        class="mapContainer"
-        :info="false"
-        :mId="
-          'm' +
-          (section.start + 'to' + section.end)
-            .replaceAll('.', '')
-            .replaceAll(' ', '_')
-        "
-        :section="section"
-        :marker="focusedPoint"
-      />
-      <StopInfo
-        class="stopInfoContainer"
-        :title="section.start"
-        :point="section.points.at(0)"
-      />
-      <Graph
-        class="graph"
-        :data="section.points"
-        :heading="'Speed'"
-        :gId="
-          (section.start + 'to' + section.end)
-            .replaceAll('.', '')
-            .replaceAll(' ', '_')
-        "
-        @focus="updateFocus($event)"
-      />
-      <StopInfo
-        class="stopInfoContainer"
-        :title="section.end"
-        :point="section.points.at(-1)"
-      />
+    <div v-else>
+      <h1>Routing error!</h1>
+      <h4>Please return to main page.</h4>
     </div>
   </div>
 </template>
@@ -63,8 +69,10 @@ export default defineComponent({
     };
   },
   created() {
-    this.gpxParsed = JSON.parse(this.gpx);
-    this.trackSections = sliceByStops(this.gpxParsed!["trackPoints"], stops);
+    if (this.gpx !== undefined) {
+      this.gpxParsed = JSON.parse(this.gpx);
+      this.trackSections = sliceByStops(this.gpxParsed!["trackPoints"], stops);
+    }
   },
   components: {
     Graph,
