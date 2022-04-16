@@ -83,6 +83,11 @@ export default defineComponent({
       //layer and zoom control
       this.layerControl = L.control.layers(baseMaps).addTo(this.map);
       L.control.zoom({ position: "topright" }).addTo(this.map);
+
+      //scale bar
+      L.control
+        .scale({ position: "bottomright", imperial: false })
+        .addTo(this.map);
     },
     addFromStore() {
       this.$store.state.gpxFiles.forEach((file) => {
