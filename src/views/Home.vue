@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <FileInput />
-    <Map :gpx="$store.state.gpxFiles" :mId="'map'" :info="true" />
+    <Map :mId="'map'" :info="true" />
     <DataCard
       v-for="file in $store.state.gpxFiles"
       v-bind:key="file"

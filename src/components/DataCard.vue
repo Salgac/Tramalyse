@@ -1,7 +1,7 @@
 <template>
   <div id="container">
     <div id="header">
-      <h1 :style="{ background: gpx.color }">{{ gpx.file.name }}</h1>
+      <h1 :style="{ background: gpx.color }">{{ gpx.name }}</h1>
       <a href="javascript:void(0)" v-on:click="deleteSelf()">&times;</a>
     </div>
     <div id="data">
@@ -52,7 +52,7 @@
         <router-link
           :to="{
             name: 'Stop-to-Stop',
-            params: { gpx: JSON.stringify(gpx), name: gpx.file.name },
+            params: { gpx: JSON.stringify(gpx), name: gpx.name },
           }"
         >
           Open stop-to-stop analysis
@@ -62,13 +62,13 @@
         class="graph"
         :data="gpx.trackPoints"
         :heading="'Speed'"
-        :gId="'s' + gpx.file.name.replaceAll('.', '').replaceAll(' ', '_')"
+        :gId="'s' + gpx.name.replaceAll('.', '').replaceAll(' ', '_')"
       />
       <Graph
         class="graph"
         :data="gpx.trackPoints"
         :heading="'Elevation'"
-        :gId="'e' + gpx.file.name.replaceAll('.', '').replaceAll(' ', '_')"
+        :gId="'e' + gpx.name.replaceAll('.', '').replaceAll(' ', '_')"
       />
     </div>
   </div>

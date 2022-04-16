@@ -19,17 +19,14 @@ import "leaflet-hotline";
 
 export default defineComponent({
   name: "Map",
-  props: ["gpx", "info", "mId", "section", "marker"],
+  props: ["info", "mId", "section", "marker"],
   watch: {
-    gpx: {
-      immediate: true,
+    "$store.state.gpxFiles": {
       deep: true,
       handler(val) {
         //handle file change
-        if (val != null && Object.keys(val).length !== 0) {
-          this.setGPX(val.at(-1), val.at(-1).color);
-          this.setHeatmap(val.at(-1));
-        }
+        this.addGpxLine(val.at(-1));
+        this.addHeatmap(val.at(-1));
       },
     },
     marker: {
@@ -49,7 +46,14 @@ export default defineComponent({
   mounted() {
     //load map
     this.setMap();
-    if (this.section != null) {
+
+    //add lines data
+    if (this.section == null) {
+      this.$store.state.gpxFiles.forEach((file) => {
+        this.addGpxLine(file);
+        this.addHeatmap(file);
+      });
+    } else {
       this.setSection();
     }
   },
@@ -79,66 +83,47 @@ export default defineComponent({
       this.layerControl = L.control.layers(baseMaps).addTo(this.map);
       L.control.zoom({ position: "topright" }).addTo(this.map);
     },
-    setGPX(gpx, color) {
-      //generate new GPX layer
-      var newGpx = new L.GPX(gpx.content, {
-        async: true,
-        marker_options: {
-          startIconUrl: "",
-          endIconUrl: "",
-          shadowUrl: "",
-        },
-        polyline_options: {
-          color: color,
-        },
+    addGpxLine(gpx) {
+      // prepare data into a separate array
+      var points = [];
+      gpx.trackPoints.forEach((point) => {
+        points.push([point.lat, point.lon]);
       });
+
+      // plot into map
+      var line = L.polyline(points, {
+        color: gpx.color,
+      });
+      this.map.fitBounds(line.getBounds());
 
       //add layer into map
-      newGpx.addTo(this.map);
-      this.layerControl.addOverlay(newGpx, gpx.file.name);
+      line.addTo(this.map);
+      this.layerControl.addOverlay(line, gpx.name);
 
-      //temp vars
-      var that;
-      that = this;
-
-      newGpx.on("loaded", function (e) {
-        that.map.fitBounds(this.getBounds());
-
-        var gpx = e.target,
-          dst = gpx.get_distance().toFixed(2),
-          eleGain = gpx.get_elevation_gain().toFixed(0),
-          eleLoss = gpx.get_elevation_loss().toFixed(0);
-
-        //add popup with info after click
-        var info =
-          "Name: " +
-          gpx.get_name() +
+      //add popup with info after click
+      line.bindPopup(
+        "Name: " +
+          gpx.name +
           "</br>" +
           "Distance: " +
-          dst +
-          " m </br>" +
-          "Elevation gain: " +
-          (eleGain - eleLoss) +
-          " m </br>";
-        gpx.getLayers()[0].bindPopup(info);
-
-        //add into layer
-        gpx.mapLayer = this;
-      });
+          gpx.info.distance.toFixed(2) +
+          " m </br>"
+      );
 
       //add weight change on hover
-      newGpx.on("mouseover", function () {
-        this.setStyle({
-          weight: 4,
+      line
+        .on("mouseover", () => {
+          line.setStyle({
+            weight: 4,
+          });
+        })
+        .on("mouseout", () => {
+          line.setStyle({
+            weight: 3,
+          });
         });
-      });
-      newGpx.on("mouseout", function () {
-        this.setStyle({
-          weight: 3,
-        });
-      });
     },
-    setHeatmap(gpx) {
+    addHeatmap(gpx) {
       // prepare data into a separate array
       var data = [];
       var haccMin = Infinity,
@@ -164,7 +149,7 @@ export default defineComponent({
       });
 
       // add into layer control for toggle
-      this.layerControl.addOverlay(hotline, gpx.file.name + " acc.");
+      this.layerControl.addOverlay(hotline, gpx.name + " acc.");
     },
     setSection() {
       // prepare data into a separate array

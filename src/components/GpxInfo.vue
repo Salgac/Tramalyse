@@ -11,7 +11,7 @@
         v-bind:key="layer"
       >
         <h1 :style="'color: ' + layer.color">
-          {{ layer.file.name }}
+          {{ layer.name }}
         </h1>
         <ul>
           <li>

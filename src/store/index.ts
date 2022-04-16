@@ -1,14 +1,11 @@
 import { createStore } from "vuex";
-import createPersistedState from "vuex-persistedstate"
 
 export default createStore({
   state: {
     gpxFiles: [] as
       {
         color: string,
-        file: any,
-        mapLayer: null,
-        content: string,
+        name: string,
         trackPoints: any, //TODO track point object
         info: any,
         trackSections: any,
@@ -16,8 +13,6 @@ export default createStore({
   },
   mutations: {
     addGpxFile(state, file) {
-      console.log();
-
       state.gpxFiles.push(file);
     }
   },
@@ -27,5 +22,4 @@ export default createStore({
     }
   },
   modules: {},
-  //plugins: [createPersistedState()], // TODO optimise gpxFiles to contain less characters
 });
