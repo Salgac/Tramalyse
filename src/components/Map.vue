@@ -22,10 +22,10 @@ export default defineComponent({
   watch: {
     "$store.state.gpxFiles": {
       deep: true,
-      handler(val) {
+      handler() {
         //handle file change
-        this.addGpxLine(val.at(-1));
-        this.addHeatmap(val.at(-1));
+        this.setMap();
+        this.addFromStore();
       },
     },
     marker: {
@@ -38,7 +38,6 @@ export default defineComponent({
     return {
       map: null,
       layerControl: null,
-      mapLayers: [],
       circleMarker: null,
     };
   },
@@ -48,16 +47,19 @@ export default defineComponent({
 
     //add lines data
     if (this.section == null) {
-      this.$store.state.gpxFiles.forEach((file) => {
-        this.addGpxLine(file);
-        this.addHeatmap(file);
-      });
+      this.addFromStore();
     } else {
       this.setSection();
     }
   },
   methods: {
     setMap() {
+      //reset
+      if (this.map != null) {
+        this.map.off();
+        this.map.remove();
+      }
+
       //tile layers setup
       const zoom = {
         maxZoom: 20,
@@ -81,6 +83,12 @@ export default defineComponent({
       //layer and zoom control
       this.layerControl = L.control.layers(baseMaps).addTo(this.map);
       L.control.zoom({ position: "topright" }).addTo(this.map);
+    },
+    addFromStore() {
+      this.$store.state.gpxFiles.forEach((file) => {
+        this.addGpxLine(file);
+        this.addHeatmap(file);
+      });
     },
     addGpxLine(gpx) {
       // prepare data into a separate array

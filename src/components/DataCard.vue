@@ -49,8 +49,7 @@ export default defineComponent({
   },
   methods: {
     deleteSelf() {
-      //TODO
-      //this.$emit("removed", "");
+      this.$store.commit("removeGpxFile", this.gpx.name);
     },
   },
   components: {

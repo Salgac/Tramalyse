@@ -10,11 +10,16 @@ export default createStore({
         info: any,
         trackSections: any,
       }[],
+    fileCounter: 0,
   },
   mutations: {
     addGpxFile(state, file) {
       state.gpxFiles.push(file);
-    }
+      state.fileCounter++;
+    },
+    removeGpxFile(state, name) {
+      state.gpxFiles.splice(state.gpxFiles.findIndex(el => el.name == name), 1);
+    },
   },
   actions: {
     addGpxFile(context, file) {
@@ -23,7 +28,7 @@ export default createStore({
   },
   getters: {
     getUniqueHex(state) {
-      const h = 35 + ((state.gpxFiles.length * 65) % 360),
+      const h = 35 + ((state.fileCounter * 65) % 360),
         s = 100,
         l = 50 / 100;
 

@@ -4,7 +4,7 @@
     <Map :mId="'map'" :info="true" />
     <DataCard
       v-for="file in $store.state.gpxFiles"
-      v-bind:key="file"
+      v-bind:key="file.name"
       :gpx="file"
     />
   </div>
