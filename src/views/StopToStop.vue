@@ -5,11 +5,7 @@
         {{ name }}
       </h1>
     </div>
-    <div
-      id="data"
-      v-for="section in gpxParsed.trackSections"
-      v-bind:key="section"
-    >
+    <div id="data" v-for="section in trackSections" v-bind:key="section">
       <Map
         class="mapContainer"
         :info="false"
@@ -53,6 +49,9 @@ import Graph from "@/components/Graph.vue";
 import StopInfo from "@/components/StopInfo.vue";
 import Map from "@/components/Map.vue";
 
+import { sliceByStops } from "@/library/gpxReader";
+import { default as stops } from "@/assets/stops.json";
+
 export default defineComponent({
   name: "StS",
   props: ["gpx", "name"],
@@ -60,10 +59,12 @@ export default defineComponent({
     return {
       gpxParsed: null,
       focusedPoint: null,
+      trackSections: [] as any[],
     };
   },
   created() {
     this.gpxParsed = JSON.parse(this.gpx);
+    this.trackSections = sliceByStops(this.gpxParsed!["trackPoints"], stops);
   },
   components: {
     Graph,
