@@ -89,7 +89,8 @@ export default defineComponent({
   },
   methods: {
     deleteSelf() {
-      this.$emit("removed", "");
+      //TODO
+      //this.$emit("removed", "");
     },
   },
   components: {

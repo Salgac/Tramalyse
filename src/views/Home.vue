@@ -1,12 +1,11 @@
 <template>
   <div class="home">
-    <FileInput @filePicked="setFile($event)" />
-    <Map :gpx="gpxFiles" :mId="'map'" :info="true" />
+    <FileInput />
+    <Map :gpx="$store.state.gpxFiles" :mId="'map'" :info="true" />
     <DataCard
-      v-for="file in gpxFiles"
+      v-for="file in $store.state.gpxFiles"
       v-bind:key="file"
       :gpx="file"
-      @removed="deleteFile(index)"
     />
   </div>
 </template>
@@ -19,23 +18,11 @@ import DataCard from "@/components/DataCard.vue";
 
 export default defineComponent({
   name: "Home",
-  data() {
-    return {
-      gpxFiles: [] as any,
-    };
-  },
   components: {
     FileInput,
     Map,
     DataCard,
   },
-  methods: {
-    setFile(file: any) {
-      this.gpxFiles.push(file);
-    },
-    deleteFile(index: number) {
-      this.gpxFiles.splice(index, 1);
-    },
-  },
+  methods: {},
 });
 </script>

@@ -4,8 +4,12 @@
     v-on:click="toggleSidebar()"
     :style="{ width: contentWidth + 'px' }"
   >
-    <ul v-if="currentLayers.length != 0">
-      <li class="layer" v-for="layer in gpx" v-bind:key="layer">
+    <ul v-if="$store.state.gpxFiles.length != 0">
+      <li
+        class="layer"
+        v-for="layer in $store.state.gpxFiles"
+        v-bind:key="layer"
+      >
         <h1 :style="'color: ' + layer.color">
           {{ layer.file.name }}
         </h1>
@@ -62,19 +66,9 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "GpxInfo",
-  props: ["gpxLayers", "gpx"],
-  watch: {
-    gpxLayers: {
-      immediate: true,
-      handler(layers) {
-        this.currentLayers = layers;
-      },
-    },
-  },
   data() {
     return {
       contentWidth: 25,
-      currentLayers: [],
     };
   },
   methods: {

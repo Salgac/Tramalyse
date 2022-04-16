@@ -1,7 +1,7 @@
 <template>
   <div id="mapContainer">
     <div class="map" :id="mId">
-      <GpxInfo v-if="info" :gpxLayers="gpxLayers" :gpx="gpx" />
+      <GpxInfo v-if="info" />
     </div>
   </div>
 </template>
@@ -43,7 +43,6 @@ export default defineComponent({
       map: null,
       layerControl: null,
       mapLayers: [],
-      gpxLayers: [],
       circleMarker: null,
     };
   },
@@ -123,8 +122,7 @@ export default defineComponent({
           " m </br>";
         gpx.getLayers()[0].bindPopup(info);
 
-        //add into layer array for props
-        that.gpxLayers.push(this);
+        //add into layer
         gpx.mapLayer = this;
       });
 

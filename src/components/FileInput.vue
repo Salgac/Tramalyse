@@ -31,6 +31,7 @@ export default defineComponent({
         var color = this.generateUniqueColor();
         var points = readGpx(content);
 
+        //TODO create a GPX class
         var gpx = {
           color: color,
           file: file,
@@ -41,8 +42,8 @@ export default defineComponent({
           trackSections: sliceByStops(points, stops),
         };
 
-        //emit gpx object
-        this.$emit("filePicked", gpx);
+        //add file to store array
+        this.$store.dispatch("addGpxFile", gpx);
       };
       fr.readAsText(file);
     },
