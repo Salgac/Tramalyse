@@ -25,8 +25,8 @@ export function readGpx(fileContent) {
 			lon: lon,
 			time: point.getElementsByTagName("time")[0].innerHTML,
 			ele: point.getElementsByTagName("ele")[0].innerHTML,
-			speed: point.getElementsByTagName("speed")[0].innerHTML, // TODO * 3.6, //from m/s to km/h
-			tramSpeed: point.getElementsByTagName("vtram")[0]?.innerHTML,
+			speed: parseFloat(point.getElementsByTagName("speed")[0].innerHTML) * 3.6, //from m/s to km/h
+			tramSpeed: parseFloat(point.getElementsByTagName("vtram")[0]?.innerHTML) * 3.6, //from m/s to km/h
 			course: point.getElementsByTagName("course")[0]?.innerHTML,
 			hacc: point.getElementsByTagName("hacc")[0]?.innerHTML,
 			dst: prevPoint.dst + getDistance(prevPoint, { lat: lat, lon: lon }),

@@ -236,7 +236,7 @@ export default defineComponent({
           ? "Speed: " +
             parseFloat(selectedData.speed).toFixed(2) +
             "km/h (" +
-            selectedData.tramSpeed +
+            parseFloat(selectedData.tramSpeed).toFixed(2) +
             ")"
           : "Elevation: " + parseFloat(selectedData.ele).toFixed(2) + "m";
       text += ", Distance: " + (selectedData.dst * 0.001).toFixed(2) + "km";
