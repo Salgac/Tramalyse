@@ -19,10 +19,10 @@
     "leaflet-gpx": "^1.7.0",
     "leaflet-hotline": "^0.4.0",
     "leaflet-providers": "^1.12.0",
+    "raw-loader": "^4.0.2",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
-    "vuex": "^4.0.0-0",
-    "vuex-persistedstate": "^4.1.0"
+    "vuex": "^4.0.0-0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.18.0",
