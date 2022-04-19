@@ -39,8 +39,9 @@ export default defineComponent({
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
       //calculate scale
-      var yScale = this.getYScale(height);
+      var yScale = this.getYScale(height, this.heading);
       var xScale = this.getXScale(width);
+      var accScale = this.getYScale(height, "Hacc");
 
       //add x and y axis into svg
       svg.append("g").attr("class", "y axis").call(d3.axisLeft(yScale));
@@ -49,11 +50,11 @@ export default defineComponent({
         .attr("class", "x axis")
         .attr("transform", "translate(2," + height + ")")
         .call(d3.axisBottom(xScale));
-      this.heading === "Speed" &&
+      this.data[0].hacc != undefined &&
         svg
           .append("g")
           .attr("class", "y axis")
-          .call(d3.axisRight(yScale))
+          .call(d3.axisRight(accScale))
           .attr("transform", "translate(" + width + ",0)");
 
       //add axis description
@@ -72,7 +73,7 @@ export default defineComponent({
         .attr("x", width)
         .attr("y", height - 6)
         .text("Distance (km)");
-      this.heading === "Speed" &&
+      this.data[0].hacc != undefined &&
         svg
           .append("text")
           .attr("class", "y label")
@@ -85,7 +86,7 @@ export default defineComponent({
       //draw paths
       var line = this.getLineGenerator(yScale, xScale, this.heading);
       var tramSpeedLine = this.getLineGenerator(yScale, xScale, "tramSpeed");
-      var accLine = this.getLineGenerator(yScale, xScale, "Accuracy");
+      var accLine = this.getLineGenerator(accScale, xScale, "Accuracy");
 
       svg
         .append("path")
@@ -102,9 +103,8 @@ export default defineComponent({
           .attr("stroke", "orange")
           .attr("stroke-width", 2)
           .attr("d", tramSpeedLine(this.data));
-
       //accuracy
-      this.heading === "Speed" &&
+      this.data[0].hacc != undefined &&
         svg
           .append("path")
           .attr("fill", "none")
@@ -125,7 +125,8 @@ export default defineComponent({
         .style("opacity", 0)
         .attr("text-anchor", "middle")
         .attr("alignment-baseline", "middle")
-        .attr("x", width / 2);
+        .attr("x", width / 2)
+        .attr("y", height + 35);
 
       //utility for mouse events
       svg
@@ -208,8 +209,8 @@ export default defineComponent({
     getYAxisText() {
       return this.heading === "Speed" ? "Speed (km/h)" : "Elevation (m)";
     },
-    getYScale(height) {
-      return this.heading === "Speed"
+    getYScale(height, type) {
+      return type === "Speed" || type === "Hacc"
         ? d3.scaleLinear().domain([0, 50]).range([height, 0])
         : d3
             .scaleLinear()
@@ -231,16 +232,21 @@ export default defineComponent({
         .range([0, width]);
     },
     handleFocus(selectedData, focus, focusText, xScale, yScale) {
+      var tram = !isNaN(selectedData.tramSpeed)
+        ? " (" + parseFloat(selectedData.tramSpeed).toFixed(2) + ")"
+        : "";
       var text =
         this.heading === "Speed"
           ? "Speed: " +
             parseFloat(selectedData.speed).toFixed(2) +
-            "km/h (" +
-            parseFloat(selectedData.tramSpeed).toFixed(2) +
-            ")"
+            "km/h" +
+            tram
           : "Elevation: " + parseFloat(selectedData.ele).toFixed(2) + "m";
-      text += ", Distance: " + (selectedData.dst * 0.001).toFixed(2) + "km";
-      text += ", Acc: " + (selectedData.hacc * 10000).toFixed(2) + "cm";
+      text += ", \tDistance: " + (selectedData.dst * 0.001).toFixed(3) + "km";
+      text += !isNaN(selectedData.hacc)
+        ? ", \tAccuracy: " + (selectedData.hacc * 10000).toFixed(2) + "cm"
+        : "";
+
       focusText.html(text);
 
       focus
