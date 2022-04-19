@@ -83,7 +83,10 @@ export default defineComponent({
   margin-bottom: 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 
+  overflow-x: scroll;
+
   #header {
+    min-width: 1400px;
     width: 100%;
     height: 50px;
     position: relative;
@@ -96,6 +99,7 @@ export default defineComponent({
   }
 
   #data {
+    min-width: 1400px;
     text-align: left;
     display: flex;
     height: 400px;
@@ -107,6 +111,7 @@ export default defineComponent({
       flex: 1 1 auto;
       padding-left: 10px;
       padding-right: 10px;
+      overflow: hidden;
     }
 
     .stopInfoContainer {
@@ -116,6 +121,12 @@ export default defineComponent({
     .mapContainer {
       width: 680px;
       height: 380px;
+    }
+
+    .graph {
+      padding: 0;
+      margin: 0;
+      margin-top: -20px;
     }
   }
 }

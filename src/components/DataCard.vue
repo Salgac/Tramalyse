@@ -17,12 +17,14 @@
           Open stop-to-stop analysis
         </router-link>
       </div>
+
       <Graph
         class="graph"
         :data="gpx.trackPoints"
         :heading="'Speed'"
         :gId="'s' + gpx.name.replaceAll('.', '').replaceAll(' ', '_')"
       />
+
       <Graph
         class="graph"
         :data="gpx.trackPoints"
@@ -62,19 +64,24 @@ export default defineComponent({
 <style lang="scss">
 #container {
   width: 100%;
-  height: 500px;
+  height: auto;
+  overflow-x: scroll;
+  min-height: 500px;
+  box-sizing: border-box;
   margin-bottom: 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 
   #header {
     width: 100%;
-    height: 50px;
+    min-height: 50px;
     position: relative;
+    min-width: 500px;
 
     h1 {
       border-radius: 5px 5px 0 0;
       padding-top: 10px;
       padding-bottom: 10px;
+      margin: 0px;
     }
 
     a {
@@ -93,19 +100,41 @@ export default defineComponent({
   }
 
   #data {
-    text-align: left;
+    h3 {
+      text-align: left;
+    }
+
     display: flex;
-    height: 450px;
-    overflow: hidden;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    min-height: 450px;
+    min-width: 500px;
+    margin: auto;
+    box-sizing: border-box;
+
+    @media only screen and (max-width: 800px) {
+      flex-direction: column;
+      height: auto;
+    }
 
     & > div {
       flex: 1;
-      padding-left: 10px;
-      padding-right: 10px;
+
+      @media only screen and (min-width: 800px) {
+        border-left: solid lightgray 1px;
+        border-right: solid lightgray 1px;
+      }
     }
 
     .info {
-      .info {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      min-width: 500px;
+
+      h3 {
+        padding-left: 10px;
+      }
+
+      .detail {
         list-style-type: none;
 
         li {
@@ -132,6 +161,7 @@ export default defineComponent({
         text-align: center;
         text-decoration: none;
         margin: auto;
+        margin-bottom: 15px;
         display: block;
         width: 50%;
         padding: 15px 32px;
@@ -148,7 +178,9 @@ export default defineComponent({
     }
 
     .graph {
-      border-left: solid lightgray 1px;
+      margin: 0px;
+      min-width: 500px;
+      overflow-x: hidden;
     }
   }
 }

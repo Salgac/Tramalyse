@@ -1,5 +1,5 @@
 <template>
-  <div class="info">
+  <div class="detail">
     <ul>
       <li>
         <label> Start time: </label>

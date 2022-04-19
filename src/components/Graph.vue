@@ -264,6 +264,9 @@ export default defineComponent({
 #container {
   width: 100%;
   height: 450px;
+
+  padding-left: 10px;
+  padding-right: 10px;
 }
 #svgcontainer {
   height: 350px;

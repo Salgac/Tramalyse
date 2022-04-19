@@ -29,15 +29,15 @@ export default defineComponent({
   name: "Sidebar",
   data() {
     return {
-      contentWidth: 25,
+      contentWidth: 30,
     };
   },
   methods: {
     toggleSidebar() {
-      if (this.contentWidth == 25) {
-        this.contentWidth = 375;
+      if (this.contentWidth == 30) {
+        this.contentWidth = 400;
       } else {
-        this.contentWidth = 25;
+        this.contentWidth = 30;
       }
     },
   },
@@ -51,9 +51,10 @@ export default defineComponent({
 #sidebar {
   display: flex;
   position: relative;
-  height: inherit;
+  height: 100%;
 
-  padding-top: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   z-index: 314159;
   top: 0;
   right: 0;
@@ -66,13 +67,19 @@ export default defineComponent({
   white-space: nowrap;
   transition: 0.5s;
 
+  ul {
+    padding-left: 30px;
+    height: fit-content;
+  }
+
   .layer {
     list-style-type: none;
     margin: 0;
+    margin-bottom: 10px;
     padding: 0;
     overflow: hidden;
 
-    .info {
+    .detail {
       margin-left: -20px;
       li {
         display: table-row;

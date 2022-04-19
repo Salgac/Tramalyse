@@ -24,6 +24,7 @@ export default {
 
   width: 100%;
   height: 100%;
+  min-width: 375px;
   margin: auto;
   padding-top: 0px;
 }
@@ -48,6 +49,8 @@ export default {
 
 #page {
   width: 95%;
+  max-width: 1920px;
+  min-width: 375px;
   margin: auto;
 }
 </style>

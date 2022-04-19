@@ -111,11 +111,17 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .inputContainer {
-  //background: pink;
-  height: 50px;
-  display: flex;
-  justify-content: space-around;
   width: 100%;
+  height: 50px;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+
+  @media only screen and (max-width: 800px) {
+    flex-direction: column;
+    height: auto;
+  }
 }
 
 button,
@@ -125,14 +131,14 @@ button,
   border: 2px solid currentColor;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 
-  max-width: 25%;
+  width: 100%;
   font-size: 1.2rem;
   font-weight: 700;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   cursor: pointer;
-  display: inline-block;
+  box-sizing: border-box;
   vertical-align: top;
   padding: 0.6rem 1rem;
   transition: 0.3s;
