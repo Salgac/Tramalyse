@@ -1,7 +1,7 @@
 <template>
   <div class="inputContainer">
     <button v-for="i in files.length" v-bind:key="i" @click="onFileClicked(i)">
-      File {{ i }}
+      Preset file {{ i }}
     </button>
 
     <input
@@ -35,20 +35,20 @@ import { generateInfo } from "@/library/gpxReader";
 
 import { defineComponent } from "vue";
 
-//TODO insert files
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import file1 from "!raw-loader!@/assets/gpx/log2.gpx";
+import file1 from "!raw-loader!@/assets/gpx/2021-04-17_11-00-22_gps.gpx";
+import file2 from "!raw-loader!@/assets/gpx/2021-04-18_11-10-26_gps.gpx";
+import file3 from "!raw-loader!@/assets/gpx/2021-04-18_19-41-07_gps.gpx";
+import file4 from "!raw-loader!@/assets/gpx/2021-04-17_20-18-09_gps.gpx";
 
 export default defineComponent({
   name: "FileInput",
   data() {
     return {
       files: [
-        { name: "File 1", content: file1 },
-        { name: "File 2", content: file1 },
-        { name: "File 3", content: file1 },
-        { name: "File 4", content: file1 },
+        { content: file1, name: "Úrad vlády SR - STU" },
+        { content: file2, name: "Nám. Ľ. Štúra - Hlavná Stanica" },
+        { content: file3, name: "Hlavná Stanica - Hlavná Stanica" },
+        { content: file4, name: "Hlavná Stanica - Depo Jurajov dvor" },
       ],
     };
   },
