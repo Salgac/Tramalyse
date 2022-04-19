@@ -1,5 +1,8 @@
 import { createStore } from "vuex";
 
+import { sliceByStops } from "@/library/gpxReader";
+import stops from "@/assets/stops.json";
+
 export default createStore({
   state: {
     gpxFiles: [] as
@@ -11,6 +14,12 @@ export default createStore({
         trackSections: any,
       }[],
     fileCounter: 0,
+
+    stsData: [] as {
+      fileName: string,
+      color: string,
+      sections: any;
+    }[],
   },
   mutations: {
     addGpxFile(state, file) {
@@ -20,13 +29,29 @@ export default createStore({
     removeGpxFile(state, name) {
       state.gpxFiles.splice(state.gpxFiles.findIndex(el => el.name == name), 1);
     },
+    addSTSdata(state, data) {
+      state.stsData.push(data);
+
+    }
   },
   actions: {
     addGpxFile(context, file) {
       context.commit('addGpxFile', file);
+      context.dispatch('addSTSdata', file);
+    },
+    async addSTSdata(context, file) {
+      const sections = await sliceByStops(file.trackPoints, stops);
+      context.commit('addSTSdata', {
+        fileName: file.name,
+        color: file.color,
+        sections: sections,
+      });
     }
   },
   getters: {
+    getSTSdata: (state) => (name: string) => {
+      return state.stsData.find((data) => data.fileName === name);
+    },
     getUniqueHex(state) {
       const h = 35 + ((state.fileCounter * 65) % 360),
         s = 100,

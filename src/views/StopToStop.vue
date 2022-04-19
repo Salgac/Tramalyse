@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="sts" v-if="gpx !== undefined">
+    <div class="sts">
       <div id="header">
-        <h1 :style="{ background: gpxParsed.color }">
+        <h1 :style="{ background: data.color }">
           {{ name }}
         </h1>
       </div>
-      <div id="data" v-for="section in trackSections" v-bind:key="section">
+      <div id="data" v-for="section in data.sections" v-bind:key="section">
         <Map
           class="mapContainer"
           :info="false"
@@ -42,10 +42,6 @@
         />
       </div>
     </div>
-    <div v-else>
-      <h1>Routing error!</h1>
-      <h4>Please return to main page.</h4>
-    </div>
   </div>
 </template>
 
@@ -55,24 +51,17 @@ import Graph from "@/components/Graph.vue";
 import StopInfo from "@/components/StopInfo.vue";
 import Map from "@/components/Map.vue";
 
-import { sliceByStops } from "@/library/gpxReader";
-import { default as stops } from "@/assets/stops.json";
-
 export default defineComponent({
   name: "StS",
-  props: ["gpx", "name"],
+  props: ["name"],
   data() {
     return {
-      gpxParsed: null,
       focusedPoint: null,
-      trackSections: [] as any[],
+      data: this.$store.getters.getSTSdata(this.name),
     };
   },
   created() {
-    if (this.gpx !== undefined) {
-      this.gpxParsed = JSON.parse(this.gpx);
-      this.trackSections = sliceByStops(this.gpxParsed!["trackPoints"], stops);
-    }
+    //
   },
   components: {
     Graph,

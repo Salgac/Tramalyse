@@ -57,7 +57,7 @@ export function generateInfo(points) {
 	}
 }
 
-export function sliceByStops(points, stops) {
+export async function sliceByStops(points, stops) {
 	var sections = [];
 
 	var startIndex = 0, lastStop = { name: "Start" }, currentStop = null;
@@ -72,7 +72,7 @@ export function sliceByStops(points, stops) {
 						if (dst < 20) {
 							//tram is within 20 metres from stop
 							currentStop = stop;
-							console.log(stop.name);
+							//console.log(stop.name);
 
 							//end last segment and add it into a list of sections
 							if (startIndex != i) {

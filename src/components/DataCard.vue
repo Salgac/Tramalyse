@@ -11,7 +11,7 @@
         <router-link
           :to="{
             name: 'Stop-to-Stop',
-            params: { gpx: JSON.stringify(gpx), name: gpx.name },
+            params: { name: gpx.name },
           }"
         >
           Open stop-to-stop analysis
