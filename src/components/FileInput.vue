@@ -38,7 +38,7 @@ import { defineComponent } from "vue";
 import file1 from "!raw-loader!@/assets/gpx/2021-04-17_11-00-22_gps.gpx";
 import file2 from "!raw-loader!@/assets/gpx/2021-04-18_11-10-26_gps.gpx";
 import file3 from "!raw-loader!@/assets/gpx/2021-04-18_19-41-07_gps.gpx";
-import file4 from "!raw-loader!@/assets/gpx/2021-04-17_20-18-09_gps.gpx";
+import file4 from "!raw-loader!@/assets/gpx/2021-04-18_20-19-05_gps.gpx";
 
 export default defineComponent({
   name: "FileInput",
