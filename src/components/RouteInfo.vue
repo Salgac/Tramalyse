@@ -39,15 +39,15 @@
         <label>Maximum speed: </label>
         <span>{{ i.speedMax.toFixed(2) }} km/h</span>
       </li>
-      <li>
+      <li v-if="!isNaN(i.haccMin)">
         <label>Worst accuracy: </label>
         <span>{{ i.haccMin.toFixed(2) }} cm</span>
       </li>
-      <li>
+      <li v-if="!isNaN(i.haccAvg)">
         <label>Average accuracy: </label>
         <span>{{ i.haccAvg.toFixed(2) }} cm</span>
       </li>
-      <li>
+      <li v-if="!isNaN(i.haccMax)">
         <label>Best accuracy: </label>
         <span>{{ i.haccMax.toFixed(2) }} cm</span>
       </li>
