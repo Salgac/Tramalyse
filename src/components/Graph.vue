@@ -242,10 +242,17 @@ export default defineComponent({
             "km/h" +
             tram
           : "Elevation: " + parseFloat(selectedData.ele).toFixed(2) + "m";
-      text += ", \tDistance: " + (selectedData.dst * 0.001).toFixed(3) + "km";
       text += !isNaN(selectedData.hacc)
-        ? ", \tAccuracy: " + (selectedData.hacc * 10000).toFixed(2) + "cm"
+        ? ", Accuracy: " + (selectedData.hacc * 10000).toFixed(2) + "cm"
         : "";
+      text += ", " + (selectedData.dst * 0.001).toFixed(3) + "km";
+      text +=
+        ", " +
+        new Date(selectedData.time).toLocaleString("de-ch", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
 
       focusText.html(text);
 
