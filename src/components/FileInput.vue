@@ -90,12 +90,18 @@ export default defineComponent({
         return;
       }
 
-      //prepare object
-      var color = this.$store.getters.getUniqueHex;
-      var points = readGpx(content);
+      //generate points
+      const points = readGpx(content);
 
+      // test if file contains points
+      if (points == null) {
+        alert("File '" + fileName + "' does not contain valid .gpx data.");
+        return;
+      }
+
+      //prepare object
       var gpx = {
-        color: color,
+        color: this.$store.getters.getUniqueHex,
         name: fileName,
         trackPoints: points,
         info: generateInfo(points),

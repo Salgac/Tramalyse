@@ -7,7 +7,7 @@ export function readGpx(fileContent) {
 
 	//error handling
 	if (trackPoints.length == 0) {
-		return [];
+		return null;
 	}
 
 	var prevPoint = {
