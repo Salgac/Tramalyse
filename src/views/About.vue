@@ -82,6 +82,17 @@
   </div>
 </template>
 
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "About",
+  created() {
+    document.title = "Tramalyse";
+  },
+});
+</script>
+
 <style lang="scss" scoped>
 .about {
   max-width: 1000px;

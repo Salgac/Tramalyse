@@ -23,6 +23,9 @@ export default defineComponent({
     Map,
     DataCard,
   },
+  created() {
+    document.title = "Tramalyse";
+  },
   methods: {},
 });
 </script>

@@ -8,7 +8,10 @@
     <router-view id="page" />
 
     <footer>
-      <p>&copy; 2021-{{ year }} Dominik Šalgovič | Faculty of Informatics and Information Technologies of Slovak University of Technology</p>
+      <p>
+        &copy; 2021-{{ year }} Dominik Šalgovič | Faculty of Informatics and
+        Information Technologies of Slovak University of Technology
+      </p>
     </footer>
   </body>
 </template>
@@ -19,9 +22,6 @@ export default {
     return {
       year: new Date().getFullYear(),
     };
-  },
-  beforeCreate() {
-    document.querySelector("body")?.setAttribute("style", "margin: 0px");
   },
 };
 </script>

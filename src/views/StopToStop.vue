@@ -61,7 +61,7 @@ export default defineComponent({
     };
   },
   created() {
-    //
+    document.title = this.name;
   },
   components: {
     Graph,
