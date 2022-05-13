@@ -5,19 +5,18 @@ import stops from "@/assets/stops.json";
 
 export default createStore({
   state: {
-    gpxFiles: [] as
-      {
-        color: string,
-        name: string,
-        trackPoints: any, //TODO track point object
-        info: any,
-        trackSections: any,
-      }[],
+    gpxFiles: [] as {
+      color: string;
+      name: string;
+      trackPoints: any; //TODO track point object
+      info: any;
+      trackSections: any;
+    }[],
     fileCounter: 0,
 
     stsData: [] as {
-      fileName: string,
-      color: string,
+      fileName: string;
+      color: string;
       sections: any;
     }[],
   },
@@ -27,26 +26,28 @@ export default createStore({
       state.fileCounter++;
     },
     removeGpxFile(state, name) {
-      state.gpxFiles.splice(state.gpxFiles.findIndex(el => el.name == name), 1);
+      state.gpxFiles.splice(
+        state.gpxFiles.findIndex((el) => el.name == name),
+        1
+      );
     },
     addSTSdata(state, data) {
       state.stsData.push(data);
-
-    }
+    },
   },
   actions: {
     addGpxFile(context, file) {
-      context.commit('addGpxFile', file);
-      context.dispatch('addSTSdata', file);
+      context.commit("addGpxFile", file);
+      context.dispatch("addSTSdata", file);
     },
     async addSTSdata(context, file) {
       const sections = await sliceByStops(file.trackPoints, stops);
-      context.commit('addSTSdata', {
+      context.commit("addSTSdata", {
         fileName: file.name,
         color: file.color,
         sections: sections,
       });
-    }
+    },
   },
   getters: {
     getSTSdata: (state) => (name: string) => {
@@ -67,7 +68,7 @@ export default createStore({
           .padStart(2, "0"); // convert to Hex and prefix "0" if needed
       };
       return `#${f(0)}${f(8)}${f(4)}`;
-    }
+    },
   },
   modules: {},
 });

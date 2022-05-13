@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "../views/Home.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -20,19 +20,16 @@ const routes: Array<RouteRecordRaw> = [
     path: "/sts",
     name: "Stop-to-Stop",
     props: true,
-    component: () =>
-      import("../views/StopToStop.vue"),
+    component: () => import("../views/StopToStop.vue"),
     beforeEnter: (to, from, next) => {
-      if (from.name === 'Home')
-        next();
-      else
-        next({ name: 'Home' });
+      if (from.name === "Home") next();
+      else next({ name: "Home" });
     },
   },
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: process.env.IS_ELECTRON ? createWebHashHistory() : createWebHistory(process.env.BASE_URL),
   routes,
 });
 

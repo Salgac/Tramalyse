@@ -66,7 +66,7 @@ export default defineComponent({
         minZoom: 12,
       };
 
-      let grayscale = L.tileLayer.provider("Stadia.AlidadeSmooth", zoom),
+      let grayscale = L.tileLayer("https://stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png?api_key=7f07f94f-506c-4a7d-8d3c-ae96e6efe4f7",zoom),
         normal = L.tileLayer.provider("OpenStreetMap.Mapnik", zoom),
         satellite = L.tileLayer.provider("Esri.WorldImagery", zoom);
 
@@ -232,4 +232,3 @@ export default defineComponent({
   height: 100%;
 }
 </style>
-
