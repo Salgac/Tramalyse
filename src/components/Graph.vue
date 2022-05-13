@@ -210,8 +210,10 @@ export default defineComponent({
       return this.heading === "Speed" ? "Speed (km/h)" : "Elevation (m)";
     },
     getYScale(height, type) {
-      return type === "Speed" || type === "Hacc"
-        ? d3.scaleLinear().domain([0, 50]).range([height, 0])
+      return type === "Speed"
+        ? d3.scaleLinear().domain([0, 55]).range([height, 0])
+        : type === "Hacc"
+        ? d3.scaleLinear().domain([0, 70]).range([height, 0])
         : d3
             .scaleLinear()
             .domain(

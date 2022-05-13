@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { readGpx } from "@/library/gpxReader";
+import { readGpx, readLog } from "@/library/gpxReader";
 import { generateInfo } from "@/library/gpxReader";
 
 import { defineComponent } from "vue";
@@ -90,8 +90,17 @@ export default defineComponent({
         return;
       }
 
+      //get file suffix
+      var extension = fileName.split(".").pop();
+
       //generate points
-      const points = readGpx(content);
+      var points = null;
+
+      if (extension == "log") {
+        points = readLog(content);
+      } else {
+        points = readGpx(content);
+      }
 
       // test if file contains points
       if (points == null) {

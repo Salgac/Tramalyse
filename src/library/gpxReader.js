@@ -1,3 +1,5 @@
+import * as JSON5 from "json5";
+
 export function readGpx(fileContent) {
 	//fun reads .gpx content and creates a data object
 	var parser = new DOMParser();
@@ -35,6 +37,50 @@ export function readGpx(fileContent) {
 		prevPoint = pt;
 	});
 	return parsedPoints;
+}
+
+// experimental
+export function readLog(fileContent) {
+	const lines = fileContent.split('\n').filter(n => n);
+	var parsedPoints = [];
+
+	var prevPoint = {
+		lat: JSON5.parse(lines[0]).lat,
+		lon: JSON5.parse(lines[0]).lon,
+		dst: 0,
+	};
+
+	var lastSpeed = 0.0;
+
+	lines.forEach((line) => {
+		try {
+			var json = JSON5.parse(line)
+			var lat = json.lat;
+			var lon = json.lon;
+
+			if (json.gSpeed != undefined) {
+				lastSpeed = json.gSpeed;
+			}
+
+			if (lat != undefined && lon != undefined && lat != 0 && lon != 0) {
+				var pt = {
+					lat: lat,
+					lon: lon,
+					time: new Date(json.timestamp * 1000).toISOString(),
+					ele: json.height / 1000,
+					speed: lastSpeed * 0.036,
+					course: json.heading,
+					hacc: parseFloat(json.hAcc) / 100000,
+					dst: prevPoint.dst + getDistance(prevPoint, { lat: lat, lon: lon }),
+				}
+				parsedPoints.push(pt);
+				prevPoint = pt;
+			}
+		} catch (e) {
+			//console.log(line);
+		}
+	});
+	return parsedPoints
 }
 
 export function generateInfo(points) {
